@@ -6,11 +6,7 @@
                 <a href="{{ route('welcome') }}" class="text-white">Главная</a>
                 <a href="{{ route('tasks.index') }}" class="text-white">Задачи</a>
                 <a href="{{ route('profile.edit') }}" class="text-white">Профиль</a>
-                
-                <!-- Проверка, если у пользователя есть команда -->
-                @if(Auth::user()->teams->isNotEmpty())
-                    <a href="{{ route('teams.index') }}" class="text-white">Команда</a>
-                @endif
+                <a href="{{ route('teams.index') }}" class="text-white">Команда</a>
             @else
                 <a href="{{ route('login') }}" class="text-white">Войти</a>
                 <a href="{{ route('register') }}" class="text-white">Регистрация</a>

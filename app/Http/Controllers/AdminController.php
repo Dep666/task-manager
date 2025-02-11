@@ -21,7 +21,11 @@ class AdminController extends Controller
         $users = User::all();
         return view('admin.users', compact('users'));
     }
-
+    public function teams()
+    {
+        $teams = Team::all();
+        return view('admin.teams', compact('teams')); // Передаем команды в представление
+    }
     // Показать форму редактирования пользователя
     public function editUser($id)
     {
@@ -48,11 +52,7 @@ class AdminController extends Controller
         $user->delete();
         return redirect()->route('admin.users')->with('success', 'Пользователь удален');
     }
-    public function teams()
-    {
-        $teams = Team::all();
-        return view('admin.teams', compact('teams')); // Передаем команды в представление
-    }
+    
 
     // Показать форму для редактирования команды
     public function editTeam($id)

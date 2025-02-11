@@ -15,10 +15,8 @@ class TaskController extends Controller
 {
     // Получаем ID всех команд, к которым принадлежит текущий пользователь
     $userTeams = Auth::user()->teams->pluck('id');
-
     // Начинаем строить запрос для задач
     $query = Task::with('team'); // Подгружаем информацию о командах
-    
     // Фильтрация по типу задачи (личные или командные)
     if ($request->has('task_type') && $request->task_type != '') {
         if ($request->task_type == 'team') {
@@ -67,10 +65,6 @@ class TaskController extends Controller
         'deadline' => 'required|date',
         'team_id' => 'nullable|exists:teams,id',
     ]);
-
-    
-
-
     // Создаем задачу
     $task = Task::create([
         'title' => $request->input('title'),
@@ -80,7 +74,6 @@ class TaskController extends Controller
         
         'user_id' => Auth::id(),
     ]);
-
     // Формируем сообщение для Telegram
     $message = "📌 *Новая задача добавлена!* \n\n" .
                "📂 *Название*: {$task->title} \n" .
@@ -90,7 +83,6 @@ class TaskController extends Controller
 
     // Отправка уведомления через TelegramService
     $this->telegramService->sendMessage($message);
-
     // Перенаправление с сообщением об успехе
     return redirect()->route('tasks.index')->with('success', 'Задача добавлена');
 }
@@ -103,9 +95,6 @@ class TaskController extends Controller
     {
         // Получаем команды текущего пользователя
         $teams = Team::where('owner_id', Auth::id())->get();
-        
-
-    
         // Передаем данные в представление
         return view('tasks.create', compact('teams'));
     }

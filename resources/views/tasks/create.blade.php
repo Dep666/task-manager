@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container my-10">
+    <div class="container mx-auto my-10">
         <h1 class="text-center mb-6 text-white text-3xl font-bold">Создание задачи</h1>
         <form action="{{ route('tasks.store') }}" method="POST" class="max-w-lg mx-auto bg-gray-800 p-6 rounded-lg shadow-lg">
             @csrf

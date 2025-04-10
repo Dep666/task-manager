@@ -31,6 +31,18 @@
             <main>
                 @yield('content') <!-- Это будет основной контент страницы -->
             </main>
+
+            <!-- Подвал -->
+            <footer class="bg-gray-800 text-white py-6 mt-10">
+                <div class="container mx-auto text-center">
+                    <p>&copy; 2025 Моя Платформа. Все права защищены.</p>
+                    <div class="mt-2">
+                        <a href="#" class="text-gray-400 hover:text-white mx-2">О нас</a>
+                        <a href="#" class="text-gray-400 hover:text-white mx-2">Политика конфиденциальности</a>
+                        <a href="#" class="text-gray-400 hover:text-white mx-2">Контакты</a>
+                    </div>
+                </div>
+            </footer>
         </div>
     </body>
 </html>

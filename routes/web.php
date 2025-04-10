@@ -73,3 +73,4 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
 Route::get('/profile/bind-telegram', [TelegramController::class, 'bind'])->name('telegram.bind');
 Route::post('/telegram/webhook', [TelegramController::class, 'webhook']);
+

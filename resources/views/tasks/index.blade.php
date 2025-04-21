@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container mx-auto my-10 px-6 lg:px-12  dark:bg-gray-900">
+    <div class="container mx-auto my-10 px-6 lg:px-12 dark:bg-gray-900">
         <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-6">Задачи</h1>
 
         <!-- Форма фильтрации задач -->
@@ -51,15 +51,30 @@
                     <p class="text-gray-700 dark:text-gray-300">{{ $task->description }}</p><br>
                     <small class="text-gray-500">Дедлайн: {{ $task->deadline }}</small><br>
 
+                    <!-- Статус задачи -->
+                    <p class="text-gray-600 dark:text-gray-400 mt-1">
+                        Статус: <span class="font-medium {{ $task->status ? 'text-blue-600 dark:text-blue-400' : 'text-gray-500' }}">
+                            {{ $task->status ? $task->status->name : 'Не установлен' }}
+                        </span>
+                    </p>
+
                     <!-- Отображение команды, если задача привязана к команде -->
                     @if ($task->team)
-                        <p class="text-gray-600 dark:text-gray-400 mt-2">Команда: {{ $task->team->name }}</p>
+                        <p class="text-gray-600 dark:text-gray-400 mt-1">Команда: {{ $task->team->name }}</p>
                     @endif
 
                     <div class="mt-3 space-x-3 flex flex-wrap justify-start">
                         <a href="{{ route('tasks.edit', $task->id) }}" class="px-4 py-2 bg-yellow-500 text-white rounded-md hover:bg-yellow-600 transition duration-300 mb-2 sm:mb-0">
                             Редактировать
                         </a>
+                        
+                        <!-- Кнопка изменения статуса -->
+                        @if($task->canChangeStatus(Auth::user()))
+                            <a href="{{ route('tasks.change-status', $task->id) }}" class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition duration-300 mb-2 sm:mb-0">
+                                Изменить статус
+                            </a>
+                        @endif
+                        
                         <form action="{{ route('tasks.destroy', $task->id) }}" method="POST" class="inline">
                             @csrf
                             @method('DELETE')
@@ -71,5 +86,10 @@
                 </li>
             @endforeach
         </ul>
+
+        <!-- Пагинация -->
+        <div class="mt-6">
+            {{ $tasks->links() }}
+        </div>
     </div>
 @endsection

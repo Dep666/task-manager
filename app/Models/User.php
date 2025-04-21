@@ -22,6 +22,7 @@ class User extends Authenticatable
         'email',
         'password',
         'telegram_chat_id', // Добавляем сюда
+        'role', // Добавляем роль в массив fillable
     ];
 
     /**

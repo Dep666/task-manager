@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="h-full">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -14,8 +14,8 @@
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
-    <body class="font-sans antialiased">
-        <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
+    <body class="font-sans antialiased h-full flex flex-col">
+        <div class="min-h-screen bg-gray-100 dark:bg-gray-900 flex flex-col flex-grow">
             @include('layouts.navigation')
 
             <!-- Page Heading -->
@@ -28,12 +28,12 @@
             @endisset
 
             <!-- Page Content -->
-            <main>
+            <main class="flex-grow">
                 @yield('content') <!-- Это будет основной контент страницы -->
             </main>
 
             <!-- Подвал -->
-            <footer class="bg-gray-800 text-white py-6 mt-10">
+            <footer class="bg-gray-800 text-white py-6 mt-auto">
                 <div class="container mx-auto text-center">
                     <p>&copy; 2025 Моя Платформа. Все права защищены.</p>
                     <div class="mt-2">

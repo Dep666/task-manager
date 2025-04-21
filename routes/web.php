@@ -25,6 +25,10 @@ Route::middleware('auth')->group(function () {
 });
 Route::middleware(['auth'])->group(function () {
     Route::resource('tasks', TaskController::class);
+    
+    // Маршруты для управления статусами задач
+    Route::get('/tasks/{task}/change-status', [TaskController::class, 'showChangeStatusForm'])->name('tasks.change-status');
+    Route::patch('/tasks/{task}/update-status', [TaskController::class, 'updateStatus'])->name('tasks.update-status');
 });
 
 require __DIR__.'/auth.php';

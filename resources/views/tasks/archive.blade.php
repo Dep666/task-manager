@@ -66,108 +66,110 @@
             </div>
         </div>
 
-        @if (session('success'))
-            <div class="mb-6 p-4 bg-green-100 border-l-4 border-green-500 text-green-700 dark:bg-green-800 dark:text-green-200">
-                {{ session('success') }}
-            </div>
-        @elseif (session('error'))
-            <div class="mb-6 p-4 bg-red-100 border-l-4 border-red-500 text-red-700 dark:bg-red-800 dark:text-red-200">
-                {{ session('error') }}
-            </div>
-        @endif
+        <div id="task-content" class="mt-6">
+            @if (session('success'))
+                <div class="mb-6 p-4 bg-green-100 border-l-4 border-green-500 text-green-700 dark:bg-green-800 dark:text-green-200">
+                    {{ session('success') }}
+                </div>
+            @elseif (session('error'))
+                <div class="mb-6 p-4 bg-red-100 border-l-4 border-red-500 text-red-700 dark:bg-red-800 dark:text-red-200">
+                    {{ session('error') }}
+                </div>
+            @endif
 
-        @if ($tasks->isEmpty())
-            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 text-center">
-                <p class="text-gray-700 dark:text-gray-300 text-lg">В архиве пока нет выполненных задач.</p>
-            </div>
-        @else
-            <ul class="list-none space-y-4">
-                @foreach ($tasks as $task)
-                    <li class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 transition-transform hover:shadow-lg relative">
-                        <!-- Оборачиваем только содержимое, кроме кнопок, в ссылку -->
-                        <div class="task-content">
-                            <a href="{{ route('tasks.show', $task->id) }}" class="block absolute inset-0 z-10"></a>
+            @if ($tasks->isEmpty())
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 text-center">
+                    <p class="text-gray-700 dark:text-gray-300 text-lg">В архиве пока нет выполненных задач.</p>
+                </div>
+            @else
+                <ul class="list-none space-y-4">
+                    @foreach ($tasks as $task)
+                        <li class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 transition-transform hover:shadow-lg relative">
+                            <!-- Оборачиваем только содержимое, кроме кнопок, в ссылку -->
+                            <div class="task-content">
+                                <a href="{{ route('tasks.show', $task->id) }}" class="block absolute inset-0 z-10"></a>
 
-                            <div class="flex justify-between items-start mb-4">
-                                <span class="text-xl font-bold text-blue-600 dark:text-blue-400 hover:underline">
-                                    {{ $task->title }}
-                                </span>
-                                
-                                <!-- Статус задачи (как бейдж) -->
-                                <span class="inline-block px-3 py-1 text-sm font-medium rounded-full"
-                                    style="background-color: #166534; color: white; border: 2px solid #16a34a;">
-                                    {{ $task->status ? $task->status->name : 'Выполнено' }}
-                                </span>
-                            </div>
-                            
-                            <p class="text-gray-700 dark:text-gray-300 mb-4">{{ $task->description }}</p>
-
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                                <!-- Дата завершения -->
-                                <div class="bg-gray-50 dark:bg-gray-700 rounded-md p-3">
-                                    <span class="flex items-center text-gray-600 dark:text-gray-300">
-                                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                        </svg>
-                                        <span class="font-medium">Завершено:</span> {{ $task->updated_at->format('d.m.Y H:i') }}
+                                <div class="flex justify-between items-start mb-4">
+                                    <span class="text-xl font-bold text-blue-600 dark:text-blue-400 hover:underline">
+                                        {{ $task->title }}
+                                    </span>
+                                    
+                                    <!-- Статус задачи (как бейдж) -->
+                                    <span class="inline-block px-3 py-1 text-sm font-medium rounded-full"
+                                        style="background-color: #166534; color: white; border: 2px solid #16a34a;">
+                                        {{ $task->status ? $task->status->name : 'Выполнено' }}
                                     </span>
                                 </div>
                                 
-                                <!-- Дедлайн -->
-                                <div class="bg-gray-50 dark:bg-gray-700 rounded-md p-3">
-                                    <span class="flex items-center text-gray-600 dark:text-gray-300">
-                                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                                        </svg>
-                                        <span class="font-medium">Дедлайн:</span> {{ \Carbon\Carbon::parse($task->deadline)->format('d.m.Y H:i') }}
-                                    </span>
-                                </div>
-                            </div>
-                            
-                            <!-- Отображение комментария к задаче, если он есть -->
-                            @if(isset($task->feedback) && $task->feedback)
-                                <div class="mb-4 p-4 bg-yellow-50 dark:bg-yellow-900/50 text-yellow-800 dark:text-yellow-200 rounded-md">
-                                    <div class="flex items-center mb-2">
-                                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"></path>
-                                        </svg>
-                                        <span class="font-semibold">Комментарий:</span>
+                                <p class="text-gray-700 dark:text-gray-300 mb-4">{{ $task->description }}</p>
+
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                    <!-- Дата завершения -->
+                                    <div class="bg-gray-50 dark:bg-gray-700 rounded-md p-3">
+                                        <span class="flex items-center text-gray-600 dark:text-gray-300">
+                                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                            </svg>
+                                            <span class="font-medium">Завершено:</span> {{ $task->updated_at->format('d.m.Y H:i') }}
+                                        </span>
                                     </div>
-                                    <p class="ml-7 whitespace-pre-line">{{ $task->feedback }}</p>
+                                    
+                                    <!-- Дедлайн -->
+                                    <div class="bg-gray-50 dark:bg-gray-700 rounded-md p-3">
+                                        <span class="flex items-center text-gray-600 dark:text-gray-300">
+                                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                            </svg>
+                                            <span class="font-medium">Дедлайн:</span> {{ \Carbon\Carbon::parse($task->deadline)->format('d.m.Y H:i') }}
+                                        </span>
+                                    </div>
                                 </div>
-                            @endif
-
-                            <div class="flex flex-wrap items-center gap-4">
-                                <!-- Отображение исполнителя, если он назначен -->
-                                @if(isset($task->assigned_user_id) && $task->assigned_user_id)
-                                    <span class="inline-flex items-center text-gray-600 dark:text-gray-300">
-                                        <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-                                        </svg>
-                                        <span class="font-medium">Исполнитель:</span> {{ $task->assignedUser ? $task->assignedUser->name : 'Не назначен' }}
-                                    </span>
+                                
+                                <!-- Отображение комментария к задаче, если он есть -->
+                                @if(isset($task->feedback) && $task->feedback)
+                                    <div class="mb-4 p-4 bg-yellow-50 dark:bg-yellow-900/50 text-yellow-800 dark:text-yellow-200 rounded-md">
+                                        <div class="flex items-center mb-2">
+                                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"></path>
+                                            </svg>
+                                            <span class="font-semibold">Комментарий:</span>
+                                        </div>
+                                        <p class="ml-7 whitespace-pre-line">{{ $task->feedback }}</p>
+                                    </div>
                                 @endif
 
-                                <!-- Отображение команды, если задача привязана к команде -->
-                                @if ($task->team)
-                                    <span class="inline-flex items-center text-gray-600 dark:text-gray-300">
-                                        <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
-                                        </svg>
-                                        <span class="font-medium">Команда:</span> {{ $task->team->name }}
-                                    </span>
-                                @endif
+                                <div class="flex flex-wrap items-center gap-4">
+                                    <!-- Отображение исполнителя, если он назначен -->
+                                    @if(isset($task->assigned_user_id) && $task->assigned_user_id)
+                                        <span class="inline-flex items-center text-gray-600 dark:text-gray-300">
+                                            <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                                            </svg>
+                                            <span class="font-medium">Исполнитель:</span> {{ $task->assignedUser ? $task->assignedUser->name : 'Не назначен' }}
+                                        </span>
+                                    @endif
+
+                                    <!-- Отображение команды, если задача привязана к команде -->
+                                    @if ($task->team)
+                                        <span class="inline-flex items-center text-gray-600 dark:text-gray-300">
+                                            <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                                            </svg>
+                                            <span class="font-medium">Команда:</span> {{ $task->team->name }}
+                                        </span>
+                                    @endif
+                                </div>
                             </div>
-                        </div>
-                    </li>
-                @endforeach
-            </ul>
+                        </li>
+                    @endforeach
+                </ul>
 
-            <!-- Пагинация -->
-            <div class="mt-6">
-                {{ $tasks->links() }}
-            </div>
-        @endif
+                <!-- Пагинация -->
+                <div class="mt-6">
+                    {{ $tasks->links() }}
+                </div>
+            @endif
+        </div>
     </div>
 
     <!-- JavaScript для анимации фильтра -->
@@ -176,6 +178,8 @@
             const filterToggle = document.getElementById('filter-toggle');
             const filterContainer = document.getElementById('filter-container');
             const filterArrow = document.getElementById('filter-arrow');
+            const filterForm = document.querySelector('#filter-container form');
+            const taskContent = document.getElementById('task-content');
             
             // Проверка, были ли установлены фильтры
             const urlParams = new URLSearchParams(window.location.search);
@@ -261,6 +265,114 @@
                     }, { once: true });
                 }
             });
+
+            // AJAX отправка формы фильтрации
+            if (filterForm) {
+                filterForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    // Показываем индикатор загрузки
+                    taskContent.innerHTML = '<div class="flex justify-center p-6"><svg class="animate-spin h-10 w-10 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg></div>';
+                    
+                    const formData = new FormData(filterForm);
+                    const searchParams = new URLSearchParams(formData);
+                    const url = `${filterForm.action}?${searchParams.toString()}`;
+                    
+                    // Обновляем URL без перезагрузки
+                    window.history.pushState({ path: url }, '', url);
+                    
+                    fetch(url, {
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
+                    })
+                    .then(response => response.text())
+                    .then(html => {
+                        // Создаем временный элемент для парсинга HTML
+                        const parser = new DOMParser();
+                        const doc = parser.parseFromString(html, 'text/html');
+                        
+                        // Извлекаем только содержимое блока с задачами
+                        const newTaskContent = doc.getElementById('task-content');
+                        if (newTaskContent) {
+                            taskContent.innerHTML = newTaskContent.innerHTML;
+                            
+                            // Переподключаем обработчики событий для кнопок в обновленном контенте
+                            setupTaskEventListeners();
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Ошибка при загрузке задач:', error);
+                        taskContent.innerHTML = '<div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-4" role="alert"><p>Произошла ошибка при загрузке задач. Пожалуйста, попробуйте еще раз.</p></div>';
+                    });
+                });
+                
+                // Обработка кнопки "Сбросить"
+                const resetButton = filterForm.querySelector('a[href="{{ route('tasks.archive') }}"]');
+                if (resetButton) {
+                    resetButton.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        
+                        // Сбрасываем значения полей формы
+                        filterForm.reset();
+                        
+                        // Имитируем отправку формы с пустыми значениями
+                        const event = new Event('submit', { bubbles: true });
+                        filterForm.dispatchEvent(event);
+                    });
+                }
+            }
+            
+            // Функция для обработки AJAX-пагинации
+            function setupPagination() {
+                const paginationLinks = document.querySelectorAll('#task-content .pagination a');
+                
+                paginationLinks.forEach(link => {
+                    link.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        
+                        const url = this.getAttribute('href');
+                        
+                        // Показываем индикатор загрузки
+                        taskContent.innerHTML = '<div class="flex justify-center p-6"><svg class="animate-spin h-10 w-10 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg></div>';
+                        
+                        // Обновляем URL без перезагрузки
+                        window.history.pushState({ path: url }, '', url);
+                        
+                        fetch(url, {
+                            headers: {
+                                'X-Requested-With': 'XMLHttpRequest'
+                            }
+                        })
+                        .then(response => response.text())
+                        .then(html => {
+                            const parser = new DOMParser();
+                            const doc = parser.parseFromString(html, 'text/html');
+                            
+                            const newTaskContent = doc.getElementById('task-content');
+                            if (newTaskContent) {
+                                taskContent.innerHTML = newTaskContent.innerHTML;
+                                
+                                // Переподключаем обработчики событий
+                                setupTaskEventListeners();
+                                setupPagination();
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Ошибка при загрузке задач:', error);
+                            taskContent.innerHTML = '<div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-4" role="alert"><p>Произошла ошибка при загрузке задач. Пожалуйста, попробуйте еще раз.</p></div>';
+                        });
+                    });
+                });
+            }
+            
+            function setupTaskEventListeners() {
+                // Настраиваем пагинацию для работы через AJAX
+                setupPagination();
+            }
+            
+            // Инициализация обработчиков при загрузке страницы
+            setupTaskEventListeners();
         });
     </script>
 @endsection 

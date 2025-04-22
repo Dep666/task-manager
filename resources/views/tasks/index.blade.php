@@ -219,6 +219,8 @@
             const filterToggle = document.getElementById('filter-toggle');
             const filterContainer = document.getElementById('filter-container');
             const filterArrow = document.getElementById('filter-arrow');
+            const filterForm = document.querySelector('#filter-container form');
+            const taskContent = document.getElementById('task-content');
             
             // Проверка, были ли установлены фильтры
             const urlParams = new URLSearchParams(window.location.search);
@@ -304,6 +306,125 @@
                     }, { once: true });
                 }
             });
+
+            // AJAX отправка формы фильтрации
+            if (filterForm) {
+                filterForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    // Показываем индикатор загрузки
+                    taskContent.innerHTML = '<div class="flex justify-center p-6"><svg class="animate-spin h-10 w-10 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg></div>';
+                    
+                    const formData = new FormData(filterForm);
+                    const searchParams = new URLSearchParams(formData);
+                    const url = `${filterForm.action}?${searchParams.toString()}`;
+                    
+                    // Обновляем URL без перезагрузки
+                    window.history.pushState({ path: url }, '', url);
+                    
+                    fetch(url, {
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
+                    })
+                    .then(response => response.text())
+                    .then(html => {
+                        // Создаем временный элемент для парсинга HTML
+                        const parser = new DOMParser();
+                        const doc = parser.parseFromString(html, 'text/html');
+                        
+                        // Извлекаем только содержимое блока с задачами
+                        const newTaskContent = doc.getElementById('task-content');
+                        if (newTaskContent) {
+                            taskContent.innerHTML = newTaskContent.innerHTML;
+                            
+                            // Переподключаем обработчики событий для кнопок в обновленном контенте
+                            setupTaskEventListeners();
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Ошибка при загрузке задач:', error);
+                        taskContent.innerHTML = '<div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-4" role="alert"><p>Произошла ошибка при загрузке задач. Пожалуйста, попробуйте еще раз.</p></div>';
+                    });
+                });
+                
+                // Обработка кнопки "Сбросить"
+                const resetButton = filterForm.querySelector('a[href="{{ route('tasks.index') }}"]');
+                if (resetButton) {
+                    resetButton.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        
+                        // Сбрасываем значения полей формы
+                        filterForm.reset();
+                        
+                        // Имитируем отправку формы с пустыми значениями
+                        const event = new Event('submit', { bubbles: true });
+                        filterForm.dispatchEvent(event);
+                    });
+                }
+            }
+            
+            // Функция для обработки AJAX-пагинации
+            function setupPagination() {
+                const paginationLinks = document.querySelectorAll('#task-content .pagination a');
+                
+                paginationLinks.forEach(link => {
+                    link.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        
+                        const url = this.getAttribute('href');
+                        
+                        // Показываем индикатор загрузки
+                        taskContent.innerHTML = '<div class="flex justify-center p-6"><svg class="animate-spin h-10 w-10 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg></div>';
+                        
+                        // Обновляем URL без перезагрузки
+                        window.history.pushState({ path: url }, '', url);
+                        
+                        fetch(url, {
+                            headers: {
+                                'X-Requested-With': 'XMLHttpRequest'
+                            }
+                        })
+                        .then(response => response.text())
+                        .then(html => {
+                            const parser = new DOMParser();
+                            const doc = parser.parseFromString(html, 'text/html');
+                            
+                            const newTaskContent = doc.getElementById('task-content');
+                            if (newTaskContent) {
+                                taskContent.innerHTML = newTaskContent.innerHTML;
+                                
+                                // Переподключаем обработчики событий
+                                setupTaskEventListeners();
+                                setupPagination();
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Ошибка при загрузке задач:', error);
+                            taskContent.innerHTML = '<div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-4" role="alert"><p>Произошла ошибка при загрузке задач. Пожалуйста, попробуйте еще раз.</p></div>';
+                        });
+                    });
+                });
+            }
+            
+            function setupTaskEventListeners() {
+                // Здесь можно добавить код для работы с кнопками в обновленном контенте
+                // Например, подтверждения удаления и т.д.
+                const deleteButtons = document.querySelectorAll('form[action*="tasks/"][action*="destroy"] button');
+                deleteButtons.forEach(button => {
+                    button.addEventListener('click', function(e) {
+                        if (!confirm('Вы уверены, что хотите удалить эту задачу?')) {
+                            e.preventDefault();
+                        }
+                    });
+                });
+                
+                // Настраиваем пагинацию для работы через AJAX
+                setupPagination();
+            }
+            
+            // Инициализация обработчиков при загрузке страницы
+            setupTaskEventListeners();
         });
     </script>
 @endsection

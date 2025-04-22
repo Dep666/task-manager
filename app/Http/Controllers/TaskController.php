@@ -64,6 +64,12 @@ class TaskController extends Controller
         // Пагинация задач (5 задач на страницу)
         $tasks = $query->paginate(5)->withQueryString();
         
+        // Если запрос отправлен через AJAX, возвращаем только часть страницы с задачами
+        if ($request->ajax()) {
+            return view('tasks.index', compact('tasks', 'statuses'))
+                ->renderSections()['content'];
+        }
+        
         return view('tasks.index', compact('tasks', 'statuses'));
     }
 
@@ -489,6 +495,12 @@ class TaskController extends Controller
         
         // Пагинация задач (10 задач на страницу)
         $tasks = $query->paginate(10)->withQueryString();
+        
+        // Если запрос отправлен через AJAX, возвращаем только часть страницы с задачами
+        if ($request->ajax()) {
+            return view('tasks.archive', compact('tasks', 'statuses'))
+                ->renderSections()['content'];
+        }
         
         return view('tasks.archive', compact('tasks', 'statuses'));
     }

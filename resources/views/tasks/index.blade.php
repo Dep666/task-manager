@@ -4,7 +4,7 @@
     <div class="container mx-auto my-10 px-6 lg:px-12 dark:bg-gray-900">
         <div class="flex justify-between items-center mb-6">
             <h1 class="text-3xl font-bold text-gray-900 dark:text-white">Список задач</h1>
-            <div class="flex space-x-2">
+            <div class="flex space-x-4">
                 <a href="{{ route('tasks.create') }}" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition duration-300 text-sm flex items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />

@@ -94,7 +94,8 @@
                                 </span>
                                 
                                 <!-- Статус задачи (как бейдж) -->
-                                <span class="inline-block px-3 py-1 text-sm font-medium rounded-full bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
+                                <span class="inline-block px-3 py-1 text-sm font-medium rounded-full"
+                                    style="background-color: #166534; color: white; border: 2px solid #16a34a;">
                                     {{ $task->status ? $task->status->name : 'Выполнено' }}
                                 </span>
                             </div>

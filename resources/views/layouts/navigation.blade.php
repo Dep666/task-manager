@@ -1,10 +1,10 @@
 <!-- Адаптивное навигационное меню с поддержкой светлой/темной темы -->
-<nav x-data="{ open: false }" class="bg-white dark:bg-gray-800 sticky top-0 z-50 shadow-md border-b border-gray-200 dark:border-gray-700">
+<nav x-data="{ open: false }" class="sticky top-0 z-50 @if(request()->routeIs('welcome')) bg-transparent border-transparent @else bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 shadow-md @endif">
     <div class="container mx-auto px-4">
         <div class="flex justify-between h-16">
             <!-- Логотип - смещен левее -->
             <div class="flex-shrink-0 flex items-center">
-                <a href="{{ route('welcome') }}" class="text-blue-700 dark:text-blue-400 font-bold text-2xl tracking-wide">
+                <a href="{{ route('welcome') }}" class="text-blue-700 @if(request()->routeIs('welcome')) text-white @else dark:text-blue-400 @endif font-bold text-2xl tracking-wide">
                     TaskManager
                 </a>
             </div>
@@ -36,16 +36,16 @@
                     <!-- Кнопка Выйти в стиле навигации -->
                     <form method="POST" action="{{ route('logout') }}" class="inline-flex items-center">
                         @csrf
-                        <button type="submit" class="text-gray-700 dark:text-gray-200 bg-gray-100 dark:bg-gray-700 hover:bg-red-600 hover:text-white transition px-4 py-2 rounded-md font-medium">
+                        <button type="submit" class="@if(request()->routeIs('welcome')) bg-gray-800/50 text-white hover:bg-red-600 @else text-gray-700 dark:text-gray-200 bg-gray-100 dark:bg-gray-700 hover:bg-red-600 hover:text-white @endif transition px-4 py-2 rounded-md font-medium">
                             Выйти
                         </button>
                     </form>
                 @else
                     <div class="flex space-x-4">
-                        <a href="{{ route('login') }}" class="text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-blue-700 dark:hover:text-blue-400 transition px-4 py-2 rounded-md font-medium">
+                        <a href="{{ route('login') }}" class="@if(request()->routeIs('welcome')) text-white hover:bg-white/10 @else text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-blue-700 dark:hover:text-blue-400 @endif transition px-4 py-2 rounded-md font-medium">
                             Войти
                         </a>
-                        <a href="{{ route('register') }}" class="text-white bg-blue-600 hover:bg-blue-700 transition px-4 py-2 rounded-md font-medium">
+                        <a href="{{ route('register') }}" class="text-white @if(request()->routeIs('welcome')) bg-blue-600/80 hover:bg-blue-700/80 @else bg-blue-600 hover:bg-blue-700 @endif transition px-4 py-2 rounded-md font-medium">
                             Регистрация
                         </a>
                     </div>
@@ -54,7 +54,7 @@
             
             <!-- Кнопка мобильного меню -->
             <div class="sm:hidden flex items-center">
-                <button id="mobile-menu-button" class="text-gray-700 dark:text-gray-200 hover:text-blue-700 dark:hover:text-blue-400 p-2 focus:outline-none bg-gray-100 dark:bg-gray-700 rounded-md">
+                <button id="mobile-menu-button" class="@if(request()->routeIs('welcome')) text-white hover:text-gray-200 bg-gray-800/30 @else text-gray-700 dark:text-gray-200 hover:text-blue-700 dark:hover:text-blue-400 bg-gray-100 dark:bg-gray-700 @endif p-2 focus:outline-none rounded-md">
                     <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
                     </svg>
@@ -64,7 +64,7 @@
     </div>
 
     <!-- Мобильное меню -->
-    <div id="mobile-menu" class="hidden sm:hidden transform transition-all duration-300 ease-in-out origin-top bg-white dark:bg-gray-800">
+    <div id="mobile-menu" class="hidden sm:hidden transform transition-all duration-300 ease-in-out origin-top @if(request()->routeIs('welcome')) bg-gray-900/90 @else bg-white dark:bg-gray-800 @endif">
         <div class="container mx-auto px-4">
             <div class="px-3 pt-3 pb-4 space-y-2">
                 @auth
@@ -88,19 +88,19 @@
                             Админ панель
                         </a>
                     @endif
-                    <div class="pt-4 mt-4 border-t border-gray-200 dark:border-gray-700">
+                    <div class="pt-4 mt-4 border-t @if(request()->routeIs('welcome')) border-gray-600 @else border-gray-200 dark:border-gray-700 @endif">
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
-                            <button type="submit" class="w-full text-center text-gray-700 dark:text-gray-200 bg-gray-100 dark:bg-gray-700 hover:bg-red-600 hover:text-white transition px-4 py-2 rounded-md text-base font-medium">
+                            <button type="submit" class="w-full text-center @if(request()->routeIs('welcome')) text-white bg-gray-800/50 hover:bg-red-600 @else text-gray-700 dark:text-gray-200 bg-gray-100 dark:bg-gray-700 hover:bg-red-600 hover:text-white @endif transition px-4 py-2 rounded-md text-base font-medium">
                                 Выйти
                             </button>
                         </form>
                     </div>
                 @else
-                    <a href="{{ route('login') }}" class="block text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-blue-700 dark:hover:text-blue-400 px-4 py-2 rounded-md text-base font-medium mb-2">
+                    <a href="{{ route('login') }}" class="block @if(request()->routeIs('welcome')) text-white hover:bg-white/10 @else text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-blue-700 dark:hover:text-blue-400 @endif px-4 py-2 rounded-md text-base font-medium mb-2">
                         Войти
                     </a>
-                    <a href="{{ route('register') }}" class="block text-white bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-md text-base font-medium">
+                    <a href="{{ route('register') }}" class="block text-white @if(request()->routeIs('welcome')) bg-blue-600/80 hover:bg-blue-700/80 @else bg-blue-600 hover:bg-blue-700 @endif px-4 py-2 rounded-md text-base font-medium">
                         Регистрация
                     </a>
                 @endauth

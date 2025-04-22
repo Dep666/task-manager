@@ -20,13 +20,13 @@
                         <!-- Статус задачи (как бейдж) -->
                         <span class="inline-block px-3 py-1 text-sm font-medium rounded-full
                             @if($task->status && str_contains(strtolower($task->status->name), 'выполнен'))
-                                bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200
+                                bg-green-700 text-white dark:bg-green-900 dark:text-white border-2 border-green-500 dark:border-green-500
                             @elseif($task->status && str_contains(strtolower($task->status->name), 'доработ'))
-                                bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200
+                                bg-yellow-100 text-yellow-800 dark:bg-yellow-800 dark:text-yellow-100 border-2 border-yellow-200 dark:border-yellow-500
                             @elseif($task->status && str_contains(strtolower($task->status->name), 'проверк'))
-                                bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200
+                                bg-blue-100 text-blue-800 dark:bg-blue-800 dark:text-blue-100 border-2 border-blue-200 dark:border-blue-500
                             @else
-                                bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300
+                                bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-100 border-2 border-gray-200 dark:border-gray-500
                             @endif
                         ">
                             {{ $task->status ? $task->status->name : 'Не установлен' }}

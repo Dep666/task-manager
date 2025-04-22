@@ -1,0 +1,119 @@
+body {
+    background: linear-gradient(135deg, #0a0c2e 0%, #102056 100%);
+    background-attachment: fixed;
+}
+
+/* Стиль для однородного фона футера */
+footer {
+    background-color: #0f172a !important; /* gray-950 */
+    position: relative;
+    z-index: 10;
+}
+
+footer::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #0f172a;
+    z-index: -1;
+}
+
+/* Анимации при скроллинге */
+.animate-on-scroll {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.animate-on-scroll.fade-in-left {
+    transform: translateX(-40px);
+}
+
+.animate-on-scroll.fade-in-right {
+    transform: translateX(40px);
+}
+
+.animate-on-scroll.fade-in-bottom {
+    transform: translateY(40px);
+}
+
+.animate-on-scroll.fade-in-top {
+    transform: translateY(-40px);
+}
+
+.animate-on-scroll.scale-in {
+    transform: scale(0.9);
+}
+
+.animate-on-scroll.visible {
+    opacity: 1;
+    transform: translate(0) scale(1);
+}
+
+/* Стили для блоков, чтобы обеспечить отступы */
+.section-block {
+    margin-top: 80px;
+    margin-bottom: 80px;
+    position: relative;
+}
+
+.section-divider {
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.divider-line {
+    height: 1px;
+    width: 100%;
+    max-width: 500px;
+    background-color: rgba(59, 130, 246, 0.2);
+}
+
+.floating {
+    animation: float 3s ease-in-out infinite;
+}
+
+.floating-delay-1 {
+    animation-delay: 0.5s;
+}
+
+.floating-delay-2 {
+    animation-delay: 1s;
+}
+
+@keyframes float {
+    0% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-20px);
+    }
+    100% {
+        transform: translateY(0px);
+    }
+}
+
+.typing-demo {
+    width: 26ch;
+    animation: typing 2.5s steps(26), blink .5s step-end infinite alternate;
+    white-space: nowrap;
+    overflow: hidden;
+    border-right: 3px solid;
+}
+
+@keyframes typing {
+    from {
+        width: 0;
+    }
+}
+
+@keyframes blink {
+    50% {
+        border-color: transparent;
+    }
+} 

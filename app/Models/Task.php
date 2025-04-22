@@ -10,7 +10,17 @@ class Task extends Model
 {
     use HasFactory;
     
-    protected $fillable = ['title', 'description', 'deadline', 'user_id', 'team_id', 'status_id'];
+    protected $fillable = [
+        'title', 
+        'description', 
+        'deadline', 
+        'user_id', 
+        'team_id', 
+        'status_id',
+        'progress',
+        'assigned_user_id',
+        'feedback'
+    ];
 
     public function user()
     {
@@ -31,6 +41,14 @@ class Task extends Model
     public function priority()
     {
         return $this->belongsTo(Priority::class);
+    }
+    
+    /**
+     * Связь с назначенным пользователем (исполнителем задачи)
+     */
+    public function assignedUser()
+    {
+        return $this->belongsTo(User::class, 'assigned_user_id');
     }
     
     /**
@@ -62,6 +80,7 @@ class Task extends Model
         // Для командной задачи
         if ($this->isTeam() && $this->team) {
             $isReviewingStatus = $this->status && $this->status->slug === 'team_reviewing';
+            $isRevisionStatus = $this->status && $this->status->slug === 'team_revision';
             $isTeamOwner = $this->team->owner_id === $user->id;
             
             // Если статус "Отправить на проверку", только владелец команды может изменить его
@@ -69,12 +88,23 @@ class Task extends Model
                 return $isTeamOwner;
             }
             
+            // Если задача на доработке, исполнитель может отправить её обратно на проверку
+            if ($isRevisionStatus) {
+                // Если пользователь - назначенный исполнитель, он может изменить статус
+                if ($this->assigned_user_id === $user->id) {
+                    return true;
+                }
+            }
+            
             // Проверяем, является ли пользователь участником команды
             $isTeamMember = $this->team->users()->where('users.id', $user->id)->exists();
             
-            // Участник команды может изменить статус, даже если он не создавал эту задачу
+            // Является ли пользователь назначенным исполнителем задачи
+            $isAssignedUser = $this->assigned_user_id === $user->id;
+            
+            // Участник команды может изменить статус, если он назначенный исполнитель или если нет назначенного исполнителя
             if ($isTeamMember) {
-                return true;
+                return $isAssignedUser || is_null($this->assigned_user_id);
             }
             
             // Создатель задачи также может менять статус

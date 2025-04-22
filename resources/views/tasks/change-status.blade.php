@@ -14,6 +14,14 @@
                     <div class="mt-1">
                         <span class="text-sm font-semibold text-gray-900 dark:text-white">Текущий статус: {{ $task->status ? $task->status->name : 'Не установлен' }}</span>
                     </div>
+                    
+                    <!-- Отображение предыдущих комментариев к задаче, если они есть -->
+                    @if(isset($task->feedback) && $task->feedback)
+                        <div class="mt-4 p-3 bg-gray-100 dark:bg-gray-700 rounded-md">
+                            <h4 class="text-sm font-bold text-gray-900 dark:text-white">Комментарий к задаче:</h4>
+                            <p class="text-gray-800 dark:text-gray-200 mt-1">{{ $task->feedback }}</p>
+                        </div>
+                    @endif
                 </div>
 
                 @if(count($statuses) > 0)
@@ -30,6 +38,13 @@
                                     </option>
                                 @endforeach
                             </select>
+                        </div>
+                        
+                        <!-- Поле для комментария - изначально скрыто -->
+                        <div id="feedback-container" class="mb-4 hidden">
+                            <label for="feedback" class="block text-sm font-bold text-gray-900 dark:text-white">Комментарий к задаче</label>
+                            <textarea id="feedback" name="feedback" rows="4" class="mt-1 block w-full py-2 px-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-gray-900 dark:text-white">{{ $task->feedback }}</textarea>
+                            <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">При смене статуса на "На доработку" требуется оставить комментарий</p>
                         </div>
                         
                         <div class="flex items-center justify-end mt-4">
@@ -54,6 +69,46 @@
             </div>
         </div>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const statusSelect = document.getElementById('status_id');
+            const feedbackContainer = document.getElementById('feedback-container');
+            
+            // Функция для проверки, нужно ли показать комментарий
+            function checkFeedbackVisibility() {
+                const selectedOption = statusSelect.options[statusSelect.selectedIndex];
+                const selectedText = selectedOption.textContent.trim().toLowerCase();
+                
+                // Показываем комментарий только для статуса "На доработку"
+                if (selectedText.includes('доработ')) {
+                    feedbackContainer.classList.remove('hidden');
+                } else {
+                    feedbackContainer.classList.add('hidden');
+                }
+            }
+            
+            // Проверяем при загрузке страницы
+            checkFeedbackVisibility();
+            
+            // Проверяем при изменении статуса
+            statusSelect.addEventListener('change', checkFeedbackVisibility);
+            
+            // Валидация перед отправкой формы
+            const form = document.querySelector('form');
+            form.addEventListener('submit', function(e) {
+                const selectedOption = statusSelect.options[statusSelect.selectedIndex];
+                const selectedText = selectedOption.textContent.trim().toLowerCase();
+                const feedbackInput = document.getElementById('feedback');
+                
+                // Если выбран статус "На доработку" и комментарий пустой, отменяем отправку
+                if (selectedText.includes('доработ') && feedbackInput.value.trim() === '') {
+                    e.preventDefault();
+                    alert('Для отправки задачи на доработку необходимо указать комментарий!');
+                }
+            });
+        });
+    </script>
 
     <style>
         /* Явно устанавливаем белый цвет для текста в темной теме */

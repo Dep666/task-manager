@@ -29,6 +29,9 @@ Route::middleware(['auth'])->group(function () {
     // Маршруты для управления статусами задач
     Route::get('/tasks/{task}/change-status', [TaskController::class, 'showChangeStatusForm'])->name('tasks.change-status');
     Route::patch('/tasks/{task}/update-status', [TaskController::class, 'updateStatus'])->name('tasks.update-status');
+    
+    // Маршрут для архива задач
+    Route::get('/tasks-archive', [TaskController::class, 'archive'])->name('tasks.archive');
 });
 
 require __DIR__.'/auth.php';
@@ -77,4 +80,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
 Route::get('/profile/bind-telegram', [TelegramController::class, 'bind'])->name('telegram.bind');
 Route::post('/telegram/webhook', [TelegramController::class, 'webhook']);
+
+// Маршрут для API получения участников команды (через веб-маршрут для решения проблем с аутентификацией)
+Route::get('/web-api/teams/{team}/members', [TeamController::class, 'getTeamMembers'])->name('teams.members')->middleware('auth');
 

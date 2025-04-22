@@ -160,5 +160,44 @@ public function addUser(Request $request, Team $team)
     }
     
 
+    // Метод API для получения членов команды
+    public function getTeamMembers(Team $team)
+    {
+        // Проверяем, имеет ли текущий пользователь доступ к команде
+        $user = auth()->user();
+        
+        if (!$user || ($team->owner_id !== $user->id && !$team->users->contains($user->id))) {
+            return response()->json(['error' => 'Unauthorized'], 403);
+        }
+        
+        // Получаем всех участников команды
+        $members = $team->users()->select('id', 'name', 'email')->get();
+        
+        return response()->json([
+            'team' => $team->name,
+            'members' => $members
+        ]);
+    }
+
+    public function show(Team $team)
+    {
+        // Проверка доступа пользователя к команде
+        $user = auth()->user();
+        
+        if (!$user || ($team->owner_id !== $user->id && !$team->users->contains($user->id))) {
+            return redirect()->route('teams.index')->with('error', 'У вас нет доступа к этой команде');
+        }
+        
+        // Загружаем данные команды вместе с участниками и владельцем
+        $team->load(['users', 'owner']);
+        
+        // Получаем задачи команды
+        $tasks = \App\Models\Task::where('team_id', $team->id)
+            ->with(['status', 'user', 'assignedUser'])
+            ->orderBy('deadline')
+            ->get();
+        
+        return view('teams.show', compact('team', 'tasks'));
+    }
 }
 

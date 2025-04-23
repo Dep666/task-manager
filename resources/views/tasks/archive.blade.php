@@ -95,8 +95,7 @@
                                     </span>
                                     
                                     <!-- Статус задачи (как бейдж) -->
-                                    <span class="inline-block px-3 py-1 text-sm font-medium rounded-full"
-                                        style="background-color: #166534; color: white; border: 2px solid #16a34a;">
+                                    <span class="inline-block px-3 py-1 text-sm font-medium rounded-full bg-green-700 text-white dark:bg-green-900 dark:text-green-200 border border-green-600 dark:border-green-800">
                                         {{ $task->status ? $task->status->name : 'Выполнено' }}
                                     </span>
                                 </div>
@@ -127,7 +126,7 @@
                                 
                                 <!-- Отображение комментария к задаче, если он есть -->
                                 @if(isset($task->feedback) && $task->feedback)
-                                    <div class="mb-4 p-4 bg-yellow-50 dark:bg-yellow-900/50 text-yellow-800 dark:text-yellow-200 rounded-md">
+                                    <div class="mb-4 p-4 bg-yellow-50 dark:bg-yellow-900/50 text-yellow-900 dark:text-yellow-200 rounded-md border border-yellow-200 dark:border-yellow-800">
                                         <div class="flex items-center mb-2">
                                             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"></path>
@@ -235,6 +234,63 @@
                     animation: slideUp 0.4s cubic-bezier(0.55, 0.085, 0.68, 0.53) forwards;
                     transform-origin: top;
                 }
+                
+                .loading-indicator {
+                    display: inline-block;
+                    position: relative;
+                    width: 80px;
+                    height: 20px;
+                }
+                .loading-indicator div {
+                    position: absolute;
+                    top: 5px;
+                    width: 10px;
+                    height: 10px;
+                    border-radius: 50%;
+                    background: #3b82f6;
+                    animation-timing-function: cubic-bezier(0, 1, 1, 0);
+                    box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
+                }
+                .loading-indicator div:nth-child(1) {
+                    left: 8px;
+                    animation: loading1 0.6s infinite;
+                }
+                .loading-indicator div:nth-child(2) {
+                    left: 8px;
+                    animation: loading2 0.6s infinite;
+                }
+                .loading-indicator div:nth-child(3) {
+                    left: 32px;
+                    animation: loading2 0.6s infinite;
+                }
+                .loading-indicator div:nth-child(4) {
+                    left: 56px;
+                    animation: loading3 0.6s infinite;
+                }
+                @keyframes loading1 {
+                    0% {
+                        transform: scale(0);
+                    }
+                    100% {
+                        transform: scale(1);
+                    }
+                }
+                @keyframes loading3 {
+                    0% {
+                        transform: scale(1);
+                    }
+                    100% {
+                        transform: scale(0);
+                    }
+                }
+                @keyframes loading2 {
+                    0% {
+                        transform: translate(0, 0);
+                    }
+                    100% {
+                        transform: translate(24px, 0);
+                    }
+                }
             `;
             document.head.appendChild(style);
             
@@ -272,7 +328,7 @@
                     e.preventDefault();
                     
                     // Показываем индикатор загрузки
-                    taskContent.innerHTML = '<div class="flex justify-center p-6"><svg class="animate-spin h-10 w-10 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg></div>';
+                    taskContent.innerHTML = '<div class="flex justify-center items-center py-12"><div class="relative w-24 h-6"><div class="loading-indicator"><div></div><div></div><div></div><div></div></div></div></div>';
                     
                     const formData = new FormData(filterForm);
                     const searchParams = new URLSearchParams(formData);
@@ -334,7 +390,7 @@
                         const url = this.getAttribute('href');
                         
                         // Показываем индикатор загрузки
-                        taskContent.innerHTML = '<div class="flex justify-center p-6"><svg class="animate-spin h-10 w-10 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg></div>';
+                        taskContent.innerHTML = '<div class="flex justify-center items-center py-12"><div class="relative w-24 h-6"><div class="loading-indicator"><div></div><div></div><div></div><div></div></div></div></div>';
                         
                         // Обновляем URL без перезагрузки
                         window.history.pushState({ path: url }, '', url);

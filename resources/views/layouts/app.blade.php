@@ -47,6 +47,11 @@
                 }
             }
         </script>
+
+        <!-- Добавьте в секцию <head> следующий код: -->
+        <link rel="icon" href="{{ asset('favicon.ico') }}" type="image/x-icon"/>
+        <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" type="image/x-icon"/>
+        <link rel="icon" type="image/svg+xml" href="{{ asset('images/logo.svg') }}">
     </head>
     <body class="font-sans antialiased h-full flex flex-col">
         <div class="min-h-screen bg-gray-100 dark:bg-gray-900 flex flex-col flex-grow">

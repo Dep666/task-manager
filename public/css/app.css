@@ -1,0 +1,19 @@
+/* Добавьте эти стили или измените существующие */
+.input-group {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-icon {
+    position: absolute;
+    left: 10px; /* отступ от левого края */
+    top: 50%;
+    transform: translateY(-50%); /* вертикальное центрирование */
+    z-index: 1;
+    color: #6b7280; /* цвет иконки */
+}
+
+.input-with-icon {
+    padding-left: 35px; /* место для иконки */
+} 

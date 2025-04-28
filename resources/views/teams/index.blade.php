@@ -6,14 +6,14 @@
 
         <!-- Сообщение об успешных действиях -->
         @if(session('success'))
-            <div class="bg-green-100 text-green-700 p-4 rounded-lg mb-4">
+            <div class="bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 p-4 rounded-lg mb-4">
                 {{ session('success') }}
             </div>
         @endif
 
         <!-- Сообщения об ошибках -->
         @if($errors->any())
-            <div class="bg-red-100 text-red-700 p-4 rounded-lg mb-4">
+            <div class="bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-300 p-4 rounded-lg mb-4">
                 <ul>
                     @foreach($errors->all() as $error)
                         <li>{{ $error }}</li>
@@ -29,50 +29,50 @@
                 name="name" 
                 value="{{ request('name') }}" 
                 placeholder="Поиск по имени команды" 
-                class="border border-gray-300 rounded-lg px-4 py-2 w-full sm:w-1/2 lg:w-1/3 focus:ring-2 focus:ring-indigo-500"
+                class="border border-gray-300 dark:border-gray-700 rounded-lg px-4 py-2 w-full sm:w-1/2 lg:w-1/3 focus:ring-2 focus:ring-indigo-500 dark:bg-gray-800 dark:text-white"
             >
             <button 
                 type="submit" 
-                class="bg-blue-600 text-white px-6 py-2 rounded-lg transition duration-300 ease-in-out hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 w-full sm:w-auto"
+                class="bg-blue-600 text-white px-6 py-2 rounded-lg transition duration-300 ease-in-out hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 w-full sm:w-auto"
             >
                 Поиск
             </button>
         </form>
 
         @if($teams->isEmpty())
-            <div class="text-gray-600 text-lg mb-6">
+            <div class="text-gray-600 dark:text-gray-400 text-lg mb-6">
                 У вас еще нет команд, но вы можете создать собственную в любой момент.
             </div>
         @else
             <!-- Список команд -->
-            <div class="bg-white shadow overflow-hidden sm:rounded-lg mb-8">
+            <div class="bg-white dark:bg-gray-800 shadow overflow-hidden sm:rounded-lg mb-8">
                 <table class="min-w-full">
                     <thead>
-                        <tr class="bg-gray-50">
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Название</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Участники</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Действия</th>
+                        <tr class="bg-gray-50 dark:bg-gray-700">
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Название</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Участники</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Действия</th>
                         </tr>
                     </thead>
-                    <tbody class="bg-white divide-y divide-gray-200">
+                    <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
                         @foreach($teams as $team)
                             <tr>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ $team->name }}</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">{{ $team->name }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
                                     @foreach($team->users as $user)
                                         <span>{{ $user->name }}</span><br>
                                     @endforeach
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                    <a href="{{ route('teams.edit', $team->id) }}" class="text-blue-600 hover:text-blue-900 transition duration-200 ease-in-out">
+                                    <a href="{{ route('teams.edit', $team->id) }}" class="text-blue-600 dark:text-blue-400 hover:text-blue-900 dark:hover:text-blue-300 transition duration-200 ease-in-out">
                                         Редактировать
                                     </a>
                                     <!-- Кнопка добавления пользователя -->
-                                    <a href="{{ route('teams.addUser', $team->id) }}" class="ml-4 text-green-600 hover:text-green-900 transition duration-200 ease-in-out">
+                                    <a href="{{ route('teams.addUser', $team->id) }}" class="ml-4 text-green-600 dark:text-green-400 hover:text-green-900 dark:hover:text-green-300 transition duration-200 ease-in-out">
                                         Добавить пользователя
                                     </a>
                                     <!-- Кнопка редактирования участников -->
-                                    <a href="{{ route('teams.editUsers', $team->id) }}" class="ml-4 text-yellow-600 hover:text-yellow-900 transition duration-200 ease-in-out">
+                                    <a href="{{ route('teams.editUsers', $team->id) }}" class="ml-4 text-yellow-600 dark:text-yellow-400 hover:text-yellow-900 dark:hover:text-yellow-300 transition duration-200 ease-in-out">
                                         Список участников
                                     </a>
                                 </td>
@@ -85,7 +85,7 @@
 
         <!-- Кнопка для создания команды -->
         <div class="mt-6">
-            <a href="{{ route('teams.create') }}" class="bg-green-600 text-white px-6 py-2 rounded-lg transition duration-300 ease-in-out hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
+            <a href="{{ route('teams.create') }}" class="bg-green-600 text-white px-6 py-2 rounded-lg transition duration-300 ease-in-out hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900">
                 Создать команду
             </a>
         </div>

@@ -103,7 +103,10 @@
                     
                     <!-- Кнопки действий -->
                     <div class="flex flex-wrap gap-4 mt-6">
-                        <a href="{{ route('tasks.index') }}" class="px-4 py-2 bg-gray-300 dark:bg-gray-600 text-gray-800 dark:text-white rounded-md hover:bg-gray-400 dark:hover:bg-gray-500">
+                        <a href="{{ route('tasks.index') }}" class="px-4 py-2 bg-gray-800 text-white rounded-md hover:bg-gray-700 transition duration-300 text-sm font-medium border border-gray-600 flex items-center">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                            </svg>
                             Назад к списку
                         </a>
                         
@@ -113,20 +116,29 @@
                         @endphp
                         
                         @if(!$isCompleted && $task->canChangeStatus(Auth::user()))
-                            <a href="{{ route('tasks.change-status', $task->id) }}" class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600">
+                            <a href="{{ route('tasks.change-status', $task->id) }}" class="px-4 py-2 bg-gray-800 text-white rounded-md hover:bg-gray-700 transition duration-300 text-sm font-medium border border-gray-600 flex items-center">
+                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                </svg>
                                 Изменить статус
                             </a>
                         @endif
                         
                         @if($task->user_id === Auth::id() || ($task->team && $task->team->owner_id === Auth::id()))
-                            <a href="{{ route('tasks.edit', $task->id) }}" class="px-4 py-2 bg-yellow-500 text-white rounded-md hover:bg-yellow-600">
+                            <a href="{{ route('tasks.edit', $task->id) }}" class="px-4 py-2 bg-gray-800 text-white rounded-md hover:bg-gray-700 transition duration-300 text-sm font-medium border border-gray-600 flex items-center">
+                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                </svg>
                                 Редактировать
                             </a>
                             
-                            <form action="{{ route('tasks.destroy', $task->id) }}" method="POST" class="inline">
+                            <form action="{{ route('tasks.destroy', $task->id) }}" method="POST" class="inline delete-form">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600" onclick="return confirm('Вы уверены, что хотите удалить эту задачу?')">
+                                <button type="submit" class="px-4 py-2 bg-gray-800 text-white rounded-md hover:bg-gray-700 transition duration-300 text-sm font-medium border border-gray-600 flex items-center">
+                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                    </svg>
                                     Удалить
                                 </button>
                             </form>
@@ -136,4 +148,21 @@
             </div>
         </div>
     </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Подтверждение удаления
+        const deleteForms = document.querySelectorAll('.delete-form');
+        
+        deleteForms.forEach(form => {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                if (confirm('Вы уверены, что хотите удалить эту задачу? Это действие нельзя отменить.')) {
+                    this.submit();
+                }
+            });
+        });
+    });
+    </script>
 @endsection 

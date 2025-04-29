@@ -5,15 +5,15 @@
         <div class="flex justify-between items-center mb-6">
             <h1 class="text-3xl font-bold text-gray-900 dark:text-white">Список задач</h1>
             <div class="flex space-x-4">
-                <a href="{{ route('tasks.create') }}" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition duration-300 text-sm flex items-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                <a href="{{ route('tasks.create') }}" class="flex items-center px-4 py-2 bg-gray-800 text-white rounded hover:bg-gray-700 transition duration-300 text-sm font-medium border border-gray-600">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                     </svg>
                     Создать задачу
                 </a>
-                <a href="{{ route('tasks.archive') }}" class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition duration-300 text-sm flex items-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                <a href="{{ route('tasks.archive') }}" class="flex items-center px-4 py-2 bg-gray-800 text-white rounded hover:bg-gray-700 transition duration-300 text-sm font-medium border border-gray-600">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
                     </svg>
                     Архив задач
                 </a>
@@ -21,7 +21,7 @@
         </div>
 
         <!-- Кнопка-триггер для фильтра -->
-        <button id="filter-toggle" class="mb-4 bg-white dark:bg-gray-800 rounded-lg shadow px-4 py-3 flex items-center justify-between w-full transition-all duration-300 hover:bg-gray-50 dark:hover:bg-gray-700">
+        <button id="filter-toggle" class="mb-4 bg-white dark:bg-gray-800 rounded shadow px-4 py-3 flex items-center justify-between w-72 transition-all duration-300 hover:bg-gray-50 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-700">
             <span class="flex items-center text-gray-800 dark:text-white">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
@@ -71,11 +71,11 @@
 
                         <!-- Кнопка фильтра -->
                         <div class="flex gap-2">
-                            <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition duration-300 text-sm">
+                            <button type="submit" class="px-4 py-2 bg-gray-800 text-white rounded-md hover:bg-gray-700 transition duration-300 text-sm font-medium border border-gray-600">
                                 Применить фильтры
                             </button>
                             @if(request()->has('task_type') || request()->has('deadline_sort') || request()->has('status'))
-                                <a href="{{ route('tasks.index') }}" class="px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600 transition duration-300 text-sm">
+                                <a href="{{ route('tasks.index') }}" class="px-4 py-2 bg-gray-800 text-white rounded-md hover:bg-gray-700 transition duration-300 text-sm font-medium border border-gray-600">
                                     Сбросить
                                 </a>
                             @endif
@@ -176,14 +176,20 @@
 
                             <div class="flex flex-wrap gap-2 mt-4" style="position: relative; z-index: 20;">
                                 @if($task->user_id === Auth::id() || ($task->team && $task->team->owner_id === Auth::id()))
-                                    <a href="{{ route('tasks.edit', $task->id) }}" class="px-4 py-2 bg-yellow-500 text-white rounded-md hover:bg-yellow-600 transition duration-300">
+                                    <a href="{{ route('tasks.edit', $task->id) }}" class="flex items-center px-4 py-2 bg-gray-800 text-white rounded hover:bg-gray-700 transition duration-300 text-sm font-medium border border-gray-600">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                        </svg>
                                         Редактировать
                                     </a>
                                     
                                     <form action="{{ route('tasks.destroy', $task->id) }}" method="POST" class="inline">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition duration-300" onclick="return confirm('Вы уверены, что хотите удалить эту задачу?')">
+                                        <button type="submit" class="flex items-center px-4 py-2 bg-gray-800 text-white rounded hover:bg-gray-700 transition duration-300 text-sm font-medium border border-gray-600" onclick="return confirm('Вы уверены, что хотите удалить эту задачу?')">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                            </svg>
                                             Удалить
                                         </button>
                                     </form>
@@ -196,7 +202,10 @@
                                 @endphp
                                 
                                 @if(!$isCompleted && $task->canChangeStatus(Auth::user()))
-                                    <a href="{{ route('tasks.change-status', $task->id) }}" class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition duration-300">
+                                    <a href="{{ route('tasks.change-status', $task->id) }}" class="flex items-center px-4 py-2 bg-gray-800 text-white rounded hover:bg-gray-700 transition duration-300 text-sm font-medium border border-gray-600">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg>
                                         Изменить статус
                                     </a>
                                 @endif

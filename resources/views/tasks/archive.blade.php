@@ -4,7 +4,7 @@
     <div class="container mx-auto my-10 px-6 lg:px-12 dark:bg-gray-900">
         <div class="flex justify-between items-center mb-6">
             <h1 class="text-3xl font-bold text-gray-900 dark:text-white">Архив выполненных задач</h1>
-            <a href="{{ route('tasks.index') }}" class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition duration-300 flex items-center text-sm">
+            <a href="{{ route('tasks.index') }}" class="px-4 py-2 bg-gray-800 text-white rounded-md hover:bg-gray-700 transition duration-300 flex items-center text-sm font-medium border border-gray-600">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                 </svg>
@@ -52,11 +52,11 @@
 
                         <!-- Кнопка фильтра -->
                         <div class="flex gap-2">
-                            <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition duration-300 text-sm">
+                            <button type="submit" class="px-4 py-2 bg-gray-800 text-white rounded-md hover:bg-gray-700 transition duration-300 text-sm font-medium border border-gray-600">
                                 Применить фильтры
                             </button>
                             @if(request()->has('task_type') || request()->has('completed_sort'))
-                                <a href="{{ route('tasks.archive') }}" class="px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600 transition duration-300 text-sm">
+                                <a href="{{ route('tasks.archive') }}" class="px-4 py-2 bg-gray-800 text-white rounded-md hover:bg-gray-700 transition duration-300 text-sm font-medium border border-gray-600">
                                     Сбросить
                                 </a>
                             @endif

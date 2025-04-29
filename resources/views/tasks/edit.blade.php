@@ -39,7 +39,7 @@
 
             <!-- Кнопка отправки -->
             <div class="text-center">
-                <button type="submit" class="btn btn-primary bg-blue-600 hover:bg-blue-700 text-white py-2 px-6 rounded-md">
+                <button type="submit" class="px-4 py-2 bg-gray-800 text-white rounded-md hover:bg-gray-700 transition duration-300 text-sm font-medium border border-gray-600">
                     Обновить задачу
                 </button>
             </div>

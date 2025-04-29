@@ -21,7 +21,7 @@
         @include('layouts.navigation')
         
         <!-- Основная секция -->
-        <div class="relative isolate px-6 lg:px-8 pt-14 pb-24">
+        <div class="relative isolate px-6 lg:px-8 pt-14 pb-12">
             <!-- Декоративные элементы -->
             <div class="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl" aria-hidden="true">
                 <div class="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#ff80b5] to-[#4f46e5] opacity-20 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]"></div>
@@ -123,9 +123,9 @@
     </div>
     
     <!-- Секция преимуществ с явной секцией -->
-    <section class="section-block py-32 sm:py-40">
+    <section class="section-block py-16 sm:py-24">
         <div class="mx-auto max-w-7xl px-6 lg:px-8">
-            <div class="mx-auto max-w-2xl text-center mb-24 animate-on-scroll fade-in-bottom">
+            <div class="mx-auto max-w-2xl text-center mb-16 animate-on-scroll fade-in-bottom">
                 <h2 class="text-xl font-semibold leading-7 text-blue-400 mb-4">Больше возможностей</h2>
                 <p class="mt-2 text-3xl font-bold tracking-tight text-white sm:text-4xl mb-8">Все, что нужно для управления проектами</p>
                 <p class="mt-6 text-lg leading-8 text-gray-300">Откройте для себя мощный инструмент, который поможет вам и вашей команде организовать работу и повысить продуктивность.</p>
@@ -171,11 +171,11 @@
     </div>
 
     <!-- CTA секция с явной секцией -->
-    <section class="section-block py-32 sm:py-40">
+    <section class="section-block py-16 sm:py-24">
         <div class="mx-auto max-w-7xl px-6 lg:px-8">
             <div class="mx-auto max-w-2xl text-center animate-on-scroll fade-in-bottom">
-                <h2 class="text-3xl font-bold tracking-tight text-white sm:text-4xl mb-8">Начните управлять задачами уже сегодня</h2>
-                <p class="mx-auto mt-8 max-w-xl text-lg leading-8 text-gray-300 mb-12">
+                <h2 class="text-3xl font-bold tracking-tight text-white sm:text-4xl mb-6">Начните управлять задачами уже сегодня</h2>
+                <p class="mx-auto mt-6 max-w-xl text-lg leading-8 text-gray-300 mb-8">
                     Присоединяйтесь к тысячам команд, которые уже оптимизировали свою работу с TaskManager.
                 </p>
                 <div class="mt-12 flex items-center justify-center gap-x-6 animate-on-scroll scale-in" style="transition-delay: 0.2s;">

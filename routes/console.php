@@ -15,4 +15,7 @@ app()->booted(function () {
     $schedule = app(Schedule::class);
     // Регистрируем команду 'notify:deadlines' для выполнения каждую минуту
     $schedule->command('notify:deadlines')->everyMinute();
+    
+    // Регистрируем команду Web Push уведомлений
+    $schedule->command('notify:webpush-deadlines')->everyMinute();
 });

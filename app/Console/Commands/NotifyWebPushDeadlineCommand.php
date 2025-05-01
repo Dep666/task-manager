@@ -7,17 +7,17 @@ use App\Models\Task;
 use App\Models\User;
 use App\Models\TaskStatus;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use App\Notifications\DeadlinePushNotification;
 
-class NotifyDeadlineCommand extends Command
+class NotifyWebPushDeadlineCommand extends Command
 {
-    protected $signature = 'notify:deadlines';
-    protected $description = 'Уведомление пользователей о приближении дедлайна задач (за день и за час)';
+    protected $signature = 'notify:webpush-deadlines';
+    protected $description = 'Отправка Web Push уведомлений пользователям о приближении дедлайна задач (за день и за час)';
 
     public function handle()
     {
-        Log::info('Запуск команды notify:deadlines');
+        Log::info('Запуск команды notify:webpush-deadlines');
 
         $now = Carbon::now('Asia/Yekaterinburg');
         Log::info('Текущее время:', ['now' => $now->toDateTimeString()]);
@@ -43,10 +43,16 @@ class NotifyDeadlineCommand extends Command
             
         Log::info('Исключаемые статусы задач:', ['completed_status_ids' => $completedStatusIds]);
 
-        // Получаем всех пользователей с привязанным Telegram
-        $users = User::whereNotNull('telegram_chat_id')->get();
+        // Получаем всех пользователей с подписками на уведомления
+        $users = User::all();
+        $webPushSentCount = 0;
 
         foreach ($users as $user) {
+            // Проверяем, есть ли у пользователя подписки на web-push
+            if (!$user->pushSubscriptions()->exists()) {
+                continue;
+            }
+
             // Получаем задачи пользователя с дедлайнами в ближайшие день и час, исключая выполненные
             $tasksDay = Task::where('user_id', $user->id)
                 ->whereBetween('deadline', [$notifyDayStart, $notifyDayEnd])
@@ -73,51 +79,20 @@ class NotifyDeadlineCommand extends Command
             // Обрабатываем уведомления
             foreach (['day' => $tasksDay, 'hour' => $tasksHour] as $interval => $tasks) {
                 foreach ($tasks as $task) {
-                    $deadline = Carbon::parse($task->deadline);
-
-$message = $interval === 'day'
-    ? "⏰ Напоминаем, что дедлайн задачи \"{$task->title}\" наступит через 1 день ({$deadline->format('d.m.Y H:i')})."
-    : "⏰ Внимание! Дедлайн задачи \"{$task->title}\" наступит через 1 час ({$deadline->format('d.m.Y H:i')}).";
-
-
-                    Log::info("Отправка уведомления пользователю:", [
+                    Log::info("Отправка Web Push уведомления пользователю:", [
                         'user_id' => $user->id,
-                        'chat_id' => $user->telegram_chat_id,
                         'task_id' => $task->id,
                         'interval' => $interval
                     ]);
 
-                    // Отправляем сообщение в Telegram
-                    $this->sendTelegramMessage($user->telegram_chat_id, $message);
+                    // Отправляем Web Push уведомление
+                    $user->notify(new DeadlinePushNotification($task, $interval));
+                    $webPushSentCount++;
                 }
             }
         }
 
-        Log::info('Команда notify:deadlines завершена');
-        $this->info("Уведомления отправлены.");
+        Log::info('Команда notify:webpush-deadlines завершена', ['sent_notifications' => $webPushSentCount]);
+        $this->info("Web Push уведомления отправлены: {$webPushSentCount}");
     }
-
-    private function sendTelegramMessage($chatId, $message)
-    {
-        $token = env('TELEGRAM_BOT_TOKEN');
-        $url   = "https://api.telegram.org/bot{$token}/sendMessage";
-
-        $payload = [
-            'chat_id'    => $chatId,
-            'text'       => $message,
-            'parse_mode' => 'HTML',
-        ];
-
-        Log::info('Отправка запроса в Telegram API:', ['url' => $url, 'payload' => $payload]);
-
-        // Отправляем запрос в Telegram
-        $response = Http::post($url, $payload);
-
-        // Логируем ответ от Telegram
-        if ($response->successful()) {
-            Log::info('Ответ от Telegram API:', ['response' => $response->json()]);
-        } else {
-            Log::error('Ошибка при отправке сообщения в Telegram:', ['error' => $response->body()]);
-        }
-    }
-}
+} 

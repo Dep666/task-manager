@@ -48,6 +48,14 @@
             }
         </script>
 
+        <!-- Web Push VAPID ключ и CSRF-токен -->
+        <script>
+            window.Laravel = {!! json_encode([
+                'csrfToken' => csrf_token(),
+                'vapidPublicKey' => config('webpush.vapid.public_key'),
+            ]) !!};
+        </script>
+
         <!-- Добавьте в секцию <head> следующий код: -->
         <link rel="icon" href="{{ asset('favicon.ico') }}" type="image/x-icon"/>
         <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" type="image/x-icon"/>

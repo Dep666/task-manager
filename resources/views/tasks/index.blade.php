@@ -95,7 +95,7 @@
                     {{ session('error') }}
                 </div>
             @endif
-
+            
             @if ($tasks->isEmpty())
                 <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 text-center">
                     <p class="text-gray-700 dark:text-gray-300 text-lg">У вас пока нет активных задач.</p>

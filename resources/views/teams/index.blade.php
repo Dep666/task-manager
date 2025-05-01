@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 py-8">
-        <h1 class="text-3xl font-semibold text-gray-800 dark:text-white mb-6">Управление командами</h1>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <h1 class="text-2xl sm:text-3xl font-semibold text-gray-800 dark:text-white mb-6">Управление командами</h1>
 
         <!-- Сообщение об успешных действиях -->
         @if(session('success'))
@@ -29,12 +29,15 @@
                 name="name" 
                 value="{{ request('name') }}" 
                 placeholder="Поиск по имени команды" 
-                class="border border-gray-300 dark:border-gray-700 rounded-lg px-4 py-2 w-full sm:w-1/2 lg:w-1/3 focus:ring-2 focus:ring-indigo-500 dark:bg-gray-800 dark:text-white"
+                class="border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 w-full sm:w-1/2 lg:w-1/3 focus:ring-2 focus:ring-indigo-500 dark:bg-gray-700 dark:text-white"
             >
             <button 
                 type="submit" 
-                class="bg-blue-600 text-white px-6 py-2 rounded-lg transition duration-300 ease-in-out hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 w-full sm:w-auto"
+                class="flex items-center px-4 py-2 bg-gray-800 dark:bg-gray-700 text-white rounded-lg hover:bg-gray-700 dark:hover:bg-gray-600 transition duration-300 text-sm font-medium border border-gray-600"
             >
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
                 Поиск
             </button>
         </form>
@@ -44,50 +47,50 @@
                 У вас еще нет команд, но вы можете создать собственную в любой момент.
             </div>
         @else
-            <!-- Список команд -->
-            <div class="bg-white dark:bg-gray-800 shadow overflow-hidden sm:rounded-lg mb-8">
-                <table class="min-w-full">
-                    <thead>
-                        <tr class="bg-gray-50 dark:bg-gray-700">
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Название</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Участники</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Действия</th>
-                        </tr>
-                    </thead>
-                    <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-                        @foreach($teams as $team)
-                            <tr>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">{{ $team->name }}</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                                    @foreach($team->users as $user)
-                                        <span>{{ $user->name }}</span><br>
-                                    @endforeach
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                    <a href="{{ route('teams.edit', $team->id) }}" class="text-blue-600 dark:text-blue-400 hover:text-blue-900 dark:hover:text-blue-300 transition duration-200 ease-in-out">
-                                        Редактировать
-                                    </a>
-                                    <!-- Кнопка добавления пользователя -->
-                                    <a href="{{ route('teams.addUser', $team->id) }}" class="ml-4 text-green-600 dark:text-green-400 hover:text-green-900 dark:hover:text-green-300 transition duration-200 ease-in-out">
-                                        Добавить пользователя
-                                    </a>
-                                    <!-- Кнопка редактирования участников -->
-                                    <a href="{{ route('teams.editUsers', $team->id) }}" class="ml-4 text-yellow-600 dark:text-yellow-400 hover:text-yellow-900 dark:hover:text-yellow-300 transition duration-200 ease-in-out">
-                                        Список участников
-                                    </a>
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+            <!-- Для мобильных устройств - список карточек -->
+            <div class="grid grid-cols-1 gap-4 mb-8">
+                @foreach($teams as $team)
+                    <div class="bg-white dark:bg-gray-800 shadow overflow-hidden rounded-lg p-4">
+                        <div class="font-medium text-lg text-gray-900 dark:text-white mb-2">{{ $team->name }}</div>
+                        
+                        <div class="text-sm text-gray-500 dark:text-gray-400 mb-4">
+                            <p class="font-medium mb-1">Участники:</p>
+                            @foreach($team->users as $user)
+                                <div>{{ $user->name }}</div>
+                            @endforeach
+                        </div>
+                        
+                        <div class="flex flex-wrap gap-2 mt-4">
+                            <a href="{{ route('teams.edit', $team->id) }}" class="flex items-center px-4 py-2 bg-gray-800 dark:bg-gray-700 text-white rounded hover:bg-gray-700 dark:hover:bg-gray-600 transition duration-300 text-sm font-medium border border-gray-600">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                </svg>
+                                Редактировать
+                            </a>
+                            
+                          
+                            
+                            <a href="{{ route('teams.editUsers', $team->id) }}" class="flex items-center px-4 py-2 bg-gray-800 dark:bg-gray-700 text-white rounded hover:bg-gray-700 dark:hover:bg-gray-600 transition duration-300 text-sm font-medium border border-gray-600">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                                </svg>
+                                Список участников
+                            </a>
+                        </div>
+                    </div>
+                @endforeach
             </div>
         @endif
 
         <!-- Кнопка для создания команды -->
         <div class="mt-6">
-            <a href="{{ route('teams.create') }}" class="bg-green-600 text-white px-6 py-2 rounded-lg transition duration-300 ease-in-out hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900">
-                Создать команду
-            </a>
+                <a href="https://kursovoy.local/task-manager/public/teams/create" 
+                    class="inline-flex items-center px-4 py-2 max-w-xs truncate bg-gray-800 dark:bg-gray-700 text-white rounded hover:bg-gray-700 dark:hover:bg-gray-600 transition duration-300 text-sm font-medium border border-gray-600">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+            </svg>
+            Создать команду
+        </a>
         </div>
     </div>
 @endsection

@@ -7,6 +7,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\TeamController;
 use App\Http\Controllers\TelegramWebhookController;
 use App\Http\Controllers\TelegramController;
+use App\Http\Controllers\PushSubscriptionController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -83,4 +84,22 @@ Route::post('/telegram/webhook', [TelegramController::class, 'webhook']);
 
 // Маршрут для API получения участников команды (через веб-маршрут для решения проблем с аутентификацией)
 Route::get('/web-api/teams/{team}/members', [TeamController::class, 'getTeamMembers'])->name('teams.members')->middleware('auth');
+
+// Маршруты для Web Push уведомлений
+Route::middleware('auth')->group(function () {
+    // Маршруты для управления подписками на push-уведомления
+    Route::get('/push-subscriptions', [PushSubscriptionController::class, 'index']);
+    Route::post('/push-subscriptions', [PushSubscriptionController::class, 'store']);
+    Route::delete('/push-subscriptions', [PushSubscriptionController::class, 'destroy']);
+    
+    // Альтернативный маршрут для удаления подписки через POST
+    Route::post('/push-subscriptions/remove', [PushSubscriptionController::class, 'destroyViaPost']);
+    
+    // Маршрут для получения VAPID публичного ключа
+    Route::get('/vapidPublicKey', function() {
+        return response()->json([
+            'vapidPublicKey' => config('webpush.vapid.public_key')
+        ]);
+    });
+});
 

@@ -8,6 +8,7 @@ use App\Http\Controllers\TeamController;
 use App\Http\Controllers\TelegramWebhookController;
 use App\Http\Controllers\TelegramController;
 use App\Http\Controllers\PushSubscriptionController;
+use App\Http\Controllers\TeamAnalyticsController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -48,6 +49,12 @@ Route::middleware('auth')->group(function () {
 
     // Обновление команды
     Route::put('teams/{team}', [TeamController::class, 'update'])->name('teams.update');
+    
+    // Страница аналитики команды
+    Route::get('teams/{team}/analytics', [TeamAnalyticsController::class, 'index'])->name('teams.analytics');
+    
+    // Экспорт аналитики команды
+    Route::get('teams/analytics/export/{id}', [TeamAnalyticsController::class, 'export'])->name('teams.analytics.export');
 });
 Route::resource('teams', TeamController::class);
 Route::get('/teams/{team}/add-user', [TeamController::class, 'addUserForm'])->name('teams.addUser');

@@ -1,6 +1,74 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Стили для модальных окон SweetAlert2 */
+.swal2-popup {
+    border-radius: 10px !important;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1) !important;
+    animation: swal2-show 0.3s !important;
+}
+
+/* Стили для светлой темы */
+html:not(.dark) .swal2-popup {
+    background-color: #ffffff !important;
+    color: #374151 !important;
+    border: 1px solid #e5e7eb !important;
+}
+
+html:not(.dark) .swal2-title {
+    color: #111827 !important;
+}
+
+html:not(.dark) .swal2-html-container {
+    color: #374151 !important;
+}
+
+/* Стили для темной темы */
+html.dark .swal2-popup, .dark-theme.swal2-popup {
+    background-color: #1e293b !important; /* темно-синий, как на скриншоте */
+    color: #f3f4f6 !important;
+    border: 1px solid #374151 !important;
+}
+
+html.dark .swal2-title, .dark-theme .swal2-title {
+    color: #f3f4f6 !important;
+}
+
+html.dark .swal2-html-container, .dark-theme .swal2-html-container {
+    color: #e0e0e0 !important; /* серебристо-серый, как на скриншоте */
+}
+
+html.dark .swal2-confirm, .dark-theme .swal2-confirm {
+    background-color: #3b82f6 !important; /* синяя кнопка, как на скриншоте */
+}
+
+/* Стили для цветных меток */
+.stat-value-blue {
+    color: #2563eb !important;
+    font-weight: bold;
+}
+
+.stat-value-green {
+    color: #059669 !important;
+    font-weight: bold;
+}
+
+.stat-value-red {
+    color: #dc2626 !important;
+    font-weight: bold;
+}
+
+.stat-value-purple {
+    color: #7c3aed !important;
+    font-weight: bold;
+}
+
+.stat-value-yellow {
+    color: #d97706 !important;
+    font-weight: bold;
+}
+
 body {
     color: #e0e0e0;
 }

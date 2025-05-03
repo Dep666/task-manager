@@ -60,9 +60,11 @@
         <link rel="icon" href="{{ asset('favicon.ico') }}" type="image/x-icon"/>
         <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" type="image/x-icon"/>
         <link rel="icon" type="image/svg+xml" href="{{ asset('images/logo.svg') }}">
+        
+        @yield('head')
     </head>
-    <body class="font-sans antialiased h-full flex flex-col">
-        <div class="min-h-screen bg-gray-100 dark:bg-gray-900 flex flex-col flex-grow">
+    <body class="font-sans antialiased h-full bg-gray-100 dark:bg-gray-900">
+        <div class="min-h-screen flex flex-col">
             @include('layouts.navigation')
 
             <!-- Page Heading -->
@@ -75,12 +77,12 @@
             @endisset
 
             <!-- Page Content -->
-            <main class="flex-grow">
+            <main class="flex-grow pb-8 bg-gray-100 dark:bg-gray-900">
                 @yield('content') <!-- Это будет основной контент страницы -->
             </main>
 
             <!-- Подвал -->
-            <footer class="bg-white dark:bg-gray-800 text-gray-800 dark:text-white py-6 mt-auto border-t border-gray-200 dark:border-gray-700">
+            <footer class="bg-white dark:bg-gray-800 text-gray-800 dark:text-white py-6 border-t border-gray-200 dark:border-gray-700">
                 <div class="container mx-auto px-4">
                     <div class="flex flex-col sm:flex-row justify-between items-center">
                         <p class="mb-4 sm:mb-0">&copy; {{ date('Y') }} TaskManager. Все права защищены.</p>
@@ -105,5 +107,8 @@
                 </div>
             </footer>
         </div>
+        
+        <!-- Дополнительные скрипты -->
+        @yield('scripts')
     </body>
 </html>

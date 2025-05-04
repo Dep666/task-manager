@@ -13,7 +13,16 @@ return new class extends Migration
     {
         Schema::create('team_invitations', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('team_id')->constrained()->onDelete('cascade');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('invited_by')->constrained('users')->onDelete('cascade');
+            $table->enum('status', ['pending', 'accepted', 'declined'])->default('pending');
+            $table->timestamp('accepted_at')->nullable();
+            $table->timestamp('declined_at')->nullable();
             $table->timestamps();
+            
+            // Уникальный ключ только для team_id и user_id без учета статуса
+            $table->unique(['team_id', 'user_id']);
         });
     }
 

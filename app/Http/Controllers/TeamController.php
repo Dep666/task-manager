@@ -106,31 +106,13 @@ public function edit(Team $team)
 
 public function addUser(Request $request, Team $team)
 {
-    // Валидация введенных данных
-    $request->validate([
-        'user_identifier' => 'required|string', // Проверяем, что поле заполнено
-    ]);
-
-    // Попробуем найти пользователя по email, ID или user_code
-    $user = User::where('email', $request->user_identifier)
-                ->orWhere('id', $request->user_identifier)
-                ->orWhere('user_code', $request->user_identifier)
-                ->first();
-
-    // Проверяем, найден ли пользователь
-    if (!$user) {
-        return back()->withErrors(['user_identifier' => 'Пользователь с таким email, ID или кодом не найден.']);
+    // Проверка, что текущий пользователь является владельцем команды
+    if ($team->owner_id !== auth()->id()) {
+        return back()->with('error', 'Только владелец команды может отправлять приглашения.');
     }
 
-    // Проверяем, не добавлен ли пользователь уже в эту команду
-    if ($team->users->contains($user->id)) {
-        return back()->withErrors(['user_identifier' => 'Этот пользователь уже добавлен в команду.']);
-    }
-
-    // Добавляем пользователя в команду
-    $team->users()->attach($user);
-
-    return redirect()->route('teams.index')->with('success', 'Пользователь успешно добавлен в команду.');
+    // Переадресация на метод invite контроллера TeamInvitationController
+    return app(TeamInvitationController::class)->invite($request, $team);
 }
 
     public function tasks(Request $request)

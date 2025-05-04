@@ -9,6 +9,7 @@ use App\Http\Controllers\TelegramWebhookController;
 use App\Http\Controllers\TelegramController;
 use App\Http\Controllers\PushSubscriptionController;
 use App\Http\Controllers\TeamAnalyticsController;
+use App\Http\Controllers\TeamInvitationController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -108,5 +109,17 @@ Route::middleware('auth')->group(function () {
             'vapidPublicKey' => config('webpush.vapid.public_key')
         ]);
     });
+});
+
+// Маршруты для работы с приглашениями в команды
+Route::middleware('auth')->group(function () {
+    // Просмотр списка приглашений
+    Route::get('/invitations', [TeamInvitationController::class, 'index'])->name('invitations.index');
+    
+    // Принятие приглашения
+    Route::post('/invitations/{invitation}/accept', [TeamInvitationController::class, 'accept'])->name('invitations.accept');
+    
+    // Отклонение приглашения
+    Route::post('/invitations/{invitation}/decline', [TeamInvitationController::class, 'decline'])->name('invitations.decline');
 });
 

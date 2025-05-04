@@ -4,7 +4,11 @@
 
 @section('content')
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        <h2 class="text-2xl font-semibold text-gray-800 dark:text-white mb-6">Добавить пользователя в команду: {{ $team->name }}</h2>
+        <h2 class="text-2xl font-semibold text-gray-800 dark:text-white mb-6">Пригласить пользователя в команду: {{ $team->name }}</h2>
+        
+        <p class="mb-5 text-gray-600 dark:text-gray-400">
+            Пользователю будет отправлено приглашение, которое он сможет принять или отклонить.
+        </p>
 
         <!-- Форма добавления пользователя -->
         <form method="POST" action="{{ route('teams.addUserPost', $team->id) }}" class="space-y-6">
@@ -48,7 +52,7 @@
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
                     </svg>
-                    Добавить пользователя
+                    Отправить приглашение
                 </button>
                 
                 

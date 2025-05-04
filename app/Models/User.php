@@ -77,4 +77,28 @@ public static function generateUserCode()
     return $code;
 }
 
+/**
+ * Получить приглашения пользователя в команды
+ */
+public function teamInvitations()
+{
+    return $this->hasMany(TeamInvitation::class, 'user_id');
+}
+
+/**
+ * Получить отправленные пользователем приглашения
+ */
+public function sentTeamInvitations()
+{
+    return $this->hasMany(TeamInvitation::class, 'invited_by');
+}
+
+/**
+ * Получить ожидающие приглашения пользователя
+ */
+public function pendingTeamInvitations()
+{
+    return $this->teamInvitations()->where('status', 'pending');
+}
+
 }

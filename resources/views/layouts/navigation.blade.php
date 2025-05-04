@@ -27,6 +27,14 @@
                     <a href="{{ route('teams.index') }}" class="{{ request()->routeIs('teams.*') ? 'bg-blue-600 text-white' : 'text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-blue-700 dark:hover:text-blue-400' }} transition px-4 py-2 rounded-md font-medium">
                         Команда
                     </a>
+                    <a href="{{ route('invitations.index') }}" class="{{ request()->routeIs('invitations.*') ? 'bg-blue-600 text-white' : 'text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-blue-700 dark:hover:text-blue-400' }} transition px-4 py-2 rounded-md font-medium relative">
+                        Приглашения
+                        @if(Auth::user()->pendingTeamInvitations()->count() > 0)
+                            <span class="absolute -top-2 -right-2 inline-flex items-center justify-center h-5 w-5 rounded-full bg-red-500 text-xs font-semibold text-white">
+                                {{ Auth::user()->pendingTeamInvitations()->count() }}
+                            </span>
+                        @endif
+                    </a>
                     @if(Auth::user()->role === 'admin')
                         <a href="{{ route('admin.dashboard') }}" class="{{ request()->routeIs('admin.*') ? 'bg-blue-600 text-white' : 'text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-blue-700 dark:hover:text-blue-400' }} transition px-4 py-2 rounded-md font-medium">
                             Админ панель
@@ -82,6 +90,14 @@
                     </a>
                     <a href="{{ route('teams.index') }}" class="{{ request()->routeIs('teams.*') ? 'bg-blue-600 text-white' : 'text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-blue-700 dark:hover:text-blue-400' }} block px-4 py-2 rounded-md text-base font-medium">
                         Команда
+                    </a>
+                    <a href="{{ route('invitations.index') }}" class="{{ request()->routeIs('invitations.*') ? 'bg-blue-600 text-white' : 'text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-blue-700 dark:hover:text-blue-400' }} block px-4 py-2 rounded-md text-base font-medium relative">
+                        Приглашения
+                        @if(Auth::user()->pendingTeamInvitations()->count() > 0)
+                            <span class="absolute top-1/2 right-4 transform -translate-y-1/2 inline-flex items-center justify-center h-5 w-5 rounded-full bg-red-500 text-xs font-semibold text-white">
+                                {{ Auth::user()->pendingTeamInvitations()->count() }}
+                            </span>
+                        @endif
                     </a>
                     @if(Auth::user()->role === 'admin')
                         <a href="{{ route('admin.dashboard') }}" class="{{ request()->routeIs('admin.*') ? 'bg-blue-600 text-white' : 'text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-blue-700 dark:hover:text-blue-400' }} block px-4 py-2 rounded-md text-base font-medium">

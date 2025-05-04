@@ -13,14 +13,23 @@ class TeamController extends Controller
 {
     public function index(Request $request)
     {
+        $user = Auth::user();
         $query = Team::query();
+
+        // Показываем только команды, где пользователь является участником или создателем
+        $query->where(function($q) use ($user) {
+            $q->where('owner_id', $user->id) // Пользователь создатель
+              ->orWhereHas('users', function($q) use ($user) {
+                  $q->where('users.id', $user->id); // Пользователь участник
+              });
+        });
 
         // Фильтрация по имени команды
         if ($request->has('name')) {
             $query->where('name', 'like', '%' . $request->input('name') . '%');
         }
 
-        // Получаем все команды с фильтром
+        // Получаем команды с фильтром
         $teams = $query->get();
 
         return view('teams.index', compact('teams'));

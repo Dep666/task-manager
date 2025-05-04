@@ -126,14 +126,14 @@
                                 
                                 <!-- Отображение комментария к задаче, если он есть -->
                                 @if(isset($task->feedback) && $task->feedback)
-                                    <div class="mb-4 p-4 bg-yellow-50 dark:bg-yellow-900/50 text-yellow-900 dark:text-yellow-200 rounded-md border border-yellow-200 dark:border-yellow-800">
+                                    <div class="mb-4 p-4 bg-indigo-50 dark:bg-gray-700 text-gray-800 dark:text-white rounded-md border border-indigo-200 dark:border-indigo-800">
                                         <div class="flex items-center mb-2">
-                                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                            <svg class="w-5 h-5 mr-2 text-indigo-600 dark:text-indigo-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"></path>
                                             </svg>
-                                            <span class="font-semibold">Комментарий:</span>
+                                            <span class="font-semibold text-indigo-700 dark:text-indigo-300">Комментарий:</span>
                                         </div>
-                                        <p class="ml-7 whitespace-pre-line">{{ $task->feedback }}</p>
+                                        <p class="ml-7 whitespace-pre-line dark:text-white">{{ $task->feedback }}</p>
                                     </div>
                                 @endif
 

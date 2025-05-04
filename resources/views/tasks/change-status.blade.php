@@ -19,7 +19,7 @@
                     @if(isset($task->feedback) && $task->feedback)
                         <div class="mt-4 p-3 bg-gray-100 dark:bg-gray-700 rounded-md">
                             <h4 class="text-sm font-bold text-gray-900 dark:text-white">Комментарий к задаче:</h4>
-                            <p class="text-gray-800 dark:text-gray-200 mt-1">{{ $task->feedback }}</p>
+                            <p class="text-gray-800 dark:text-white mt-1">{{ $task->feedback }}</p>
                         </div>
                     @endif
                 </div>

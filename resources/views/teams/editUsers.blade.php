@@ -23,13 +23,42 @@
                 <thead>
                     <tr class="bg-gray-50 dark:bg-gray-700">
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Имя участника</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Роль</th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Действия</th>
                     </tr>
                 </thead>
                 <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-                    @foreach($team->users as $user)
+                    <!-- Сначала выводим создателя команды -->
+                    @php
+                        $owner = $team->users->firstWhere('id', $team->owner_id);
+                        $members = $team->users->filter(function($user) use ($team) {
+                            return $user->id != $team->owner_id;
+                        });
+                    @endphp
+                    
+                    @if($owner)
+                    <tr>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">{{ $owner->name }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                            <span style="background-color: #16A34A; color: white; border-radius: 9999px; padding: 4px 12px; font-size: 0.75rem; font-weight: 600;">
+                                Создатель команды
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                            <!-- Пустая ячейка - создателя нельзя удалить -->
+                        </td>
+                    </tr>
+                    @endif
+                    
+                    <!-- Затем выводим остальных участников -->
+                    @foreach($members as $user)
                         <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">{{ $user->name }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                <span style="background-color: #3B82F6; color: white; border-radius: 9999px; padding: 4px 12px; font-size: 0.75rem; font-weight: 600;">
+                                    Участник
+                                </span>
+                            </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                 @if ($team->owner_id == auth()->user()->id) <!-- Проверка, если текущий пользователь является владельцем -->
                                     <form action="{{ route('teams.removeUser', ['team' => $team->id, 'user' => $user->id]) }}" method="POST" class="inline">

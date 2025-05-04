@@ -111,14 +111,15 @@ public function addUser(Request $request, Team $team)
         'user_identifier' => 'required|string', // Проверяем, что поле заполнено
     ]);
 
-    // Попробуем найти пользователя по email или ID
+    // Попробуем найти пользователя по email, ID или user_code
     $user = User::where('email', $request->user_identifier)
                 ->orWhere('id', $request->user_identifier)
+                ->orWhere('user_code', $request->user_identifier)
                 ->first();
 
     // Проверяем, найден ли пользователь
     if (!$user) {
-        return back()->withErrors(['user_identifier' => 'Пользователь с таким email или ID не найден.']);
+        return back()->withErrors(['user_identifier' => 'Пользователь с таким email, ID или кодом не найден.']);
     }
 
     // Проверяем, не добавлен ли пользователь уже в эту команду

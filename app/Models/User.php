@@ -24,6 +24,7 @@ class User extends Authenticatable
         'password',
         'telegram_chat_id', // Добавляем сюда
         'role', // Добавляем роль в массив fillable
+        'user_code', // Добавляем код пользователя
     ];
 
     /**
@@ -57,6 +58,23 @@ class User extends Authenticatable
     public function isAdmin()
 {
     return $this->role === 'admin';
+}
+
+// Метод для генерации уникального кода пользователя
+public static function generateUserCode()
+{
+    $characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    $code = '';
+    
+    do {
+        $code = '';
+        for ($i = 0; $i < 6; $i++) {
+            $index = rand(0, strlen($characters) - 1);
+            $code .= $characters[$index];
+        }
+    } while (self::where('user_code', $code)->exists());
+    
+    return $code;
 }
 
 }

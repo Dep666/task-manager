@@ -12,13 +12,13 @@
 
             <!-- Поле для ввода email или ID пользователя -->
             <div class="mb-4">
-                <label for="user_identifier" class="block text-sm font-medium text-gray-900 dark:text-gray-300 mb-1">Введите email или ID пользователя</label>
+                <label for="user_identifier" class="block text-sm font-medium text-gray-900 dark:text-gray-300 mb-1">Введите email, ID или код пользователя</label>
                 <input 
                     type="text" 
                     name="user_identifier" 
                     id="user_identifier" 
                     class="block w-full border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 text-gray-900 dark:bg-gray-700 dark:text-white"
-                    placeholder="email или ID"
+                    placeholder="email, ID или код пользователя"
                     value="{{ old('user_identifier') }}"
                     required
                 >

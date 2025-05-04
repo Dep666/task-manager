@@ -299,6 +299,38 @@
                 }
             });
         });
+
+        function copyToClipboard(elementId) {
+            const element = document.getElementById(elementId);
+            element.select();
+            document.execCommand('copy');
+            
+            // Показываем уведомление
+            const tooltip = document.createElement('div');
+            tooltip.innerText = 'Скопировано!';
+            tooltip.style.position = 'fixed';
+            tooltip.style.backgroundColor = '#4CAF50';
+            tooltip.style.color = 'white';
+            tooltip.style.padding = '5px 10px';
+            tooltip.style.borderRadius = '3px';
+            tooltip.style.zIndex = '1000';
+            tooltip.style.transition = 'opacity 1s';
+            
+            // Позиционируем рядом с кнопкой
+            const buttonRect = event.currentTarget.getBoundingClientRect();
+            tooltip.style.top = `${buttonRect.top - 30}px`;
+            tooltip.style.left = `${buttonRect.left}px`;
+            
+            document.body.appendChild(tooltip);
+            
+            // Удаляем уведомление через время
+            setTimeout(() => {
+                tooltip.style.opacity = '0';
+                setTimeout(() => {
+                    document.body.removeChild(tooltip);
+                }, 1000);
+            }, 2000);
+        }
     </script>
 @endsection
 

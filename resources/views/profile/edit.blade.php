@@ -14,7 +14,7 @@
                 </div>
                 
                 <!-- Кнопка для привязки Telegram -->
-                <div class="p-4 sm:p-8 bg-white dark:bg-gray-900 shadow sm:rounded-lg border border-gray-200 dark:border-gray-700">
+                {{-- <div class="p-4 sm:p-8 bg-white dark:bg-gray-900 shadow sm:rounded-lg border border-gray-200 dark:border-gray-700">
                     <div class="max-w-xl mx-auto">
                         <!-- Если у пользователя уже есть привязанный Telegram, показываем информацию, иначе кнопку -->
                         @if($user->telegram_username)
@@ -27,7 +27,7 @@
                         </button>
                         @endif
                     </div>
-                </div>
+                </div> --}}
 
                 <!-- Секция Web Push уведомлений -->
                 <div class="p-4 sm:p-8 bg-white dark:bg-gray-900 shadow sm:rounded-lg border border-gray-200 dark:border-gray-700">

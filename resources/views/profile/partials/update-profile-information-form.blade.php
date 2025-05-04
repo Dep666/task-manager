@@ -20,7 +20,7 @@
         <div>
             <x-input-label for="name" :value="__('Имя')" class="text-gray-900 dark:text-gray-100" />
             <x-text-input id="name" name="name" type="text" 
-                class="w-full pl-10 pr-3 py-2.5 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-gray-900 dark:text-white"
+                class="w-full pl-4 pr-3 py-2.5 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-gray-900 dark:text-white"
                 :value="old('name', $user->name)" required autofocus autocomplete="name" />
             <x-input-error class="mt-2 text-red-500 dark:text-red-400" :messages="$errors->get('name')" />
         </div>
@@ -28,7 +28,7 @@
         <div>
             <x-input-label for="email" :value="__('Электронная почта')" class="text-gray-900 dark:text-gray-100" />
             <x-text-input id="email" name="email" type="email" 
-                class="w-full pl-10 pr-3 py-2.5 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-gray-900 dark:text-white"
+                class="w-full pl-4 pr-3 py-2.5 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-gray-900 dark:text-white"
                 :value="old('email', $user->email)" required autocomplete="username" />
             <x-input-error class="mt-2 text-red-500 dark:text-red-400" :messages="$errors->get('email')" />
 

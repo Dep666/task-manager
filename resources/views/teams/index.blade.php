@@ -91,7 +91,7 @@
 
         <!-- Кнопка для создания команды -->
         <div class="mt-6">
-                <a href="https://kursovoy.local/task-manager/public/teams/create" 
+                <a href="{{ route('teams.create') }}" 
                     class="inline-flex items-center px-4 py-2 max-w-xs truncate bg-gray-800 dark:bg-gray-700 text-white rounded hover:bg-gray-700 dark:hover:bg-gray-600 transition duration-300 text-sm font-medium border border-gray-600">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>

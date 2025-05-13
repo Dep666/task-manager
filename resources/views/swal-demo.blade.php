@@ -1,269 +1,186 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="py-12">
-    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-        <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-            <div class="p-6 text-gray-900 dark:text-gray-100">
-                <h1 class="text-2xl font-bold mb-6">Демонстрация SweetAlert2</h1>
+<div class="container mx-auto px-4 py-8">
+    <div class="max-w-4xl mx-auto">
+        <h1 class="text-2xl font-bold mb-6">Демонстрация Notyf</h1>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+                <h2 class="text-lg font-semibold mb-4">Основные уведомления</h2>
                 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <!-- Простые уведомления -->
-                    <div class="bg-gray-700 p-6 rounded-lg">
-                        <h2 class="text-xl font-semibold mb-4">Уведомления</h2>
-                        <div class="space-y-3">
-                            <button onclick="showSuccess('Операция успешно выполнена!')" 
-                                    class="w-full bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded">
-                                Успех
+                <div class="space-y-4">
+                    <button id="success-notification" class="w-full p-3 bg-green-600 text-white rounded-md hover:bg-green-700 transition">
+                        Успешное уведомление
                             </button>
-                            <button onclick="showError('Произошла ошибка при выполнении операции')" 
-                                    class="w-full bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded">
+                    
+                    <button id="error-notification" class="w-full p-3 bg-red-600 text-white rounded-md hover:bg-red-700 transition">
                                 Ошибка
                             </button>
-                            <button onclick="showWarning('Внимание! Эта операция не может быть отменена')" 
-                                    class="w-full bg-yellow-600 hover:bg-yellow-700 text-white py-2 px-4 rounded">
-                                Предупреждение
-                            </button>
-                            <button onclick="showInfo('Это информационное сообщение')" 
-                                    class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded">
+                    
+                    <button id="info-notification" class="w-full p-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition">
                                 Информация
                             </button>
-                        </div>
-                    </div>
                     
-                    <!-- Диалоги с подтверждением -->
-                    <div class="bg-gray-700 p-6 rounded-lg">
-                        <h2 class="text-xl font-semibold mb-4">Диалоги подтверждения</h2>
-                        <div class="space-y-4">
-                            <button onclick="confirmDelete()" 
-                                    class="w-full bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded">
-                                Удалить элемент
-                            </button>
-                            <button onclick="confirmAction()" 
-                                    class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded">
-                                Подтвердить действие
-                            </button>
-                            <button onclick="inputPrompt()" 
-                                    class="w-full bg-purple-600 hover:bg-purple-700 text-white py-2 px-4 rounded">
-                                Запросить ввод
+                    <button id="warning-notification" class="w-full p-3 bg-yellow-600 text-white rounded-md hover:bg-yellow-700 transition">
+                        Предупреждение
                             </button>
                         </div>
                     </div>
                     
-                    <!-- Расширенные примеры -->
-                    <div class="bg-gray-700 p-6 rounded-lg col-span-1 md:col-span-2">
-                        <h2 class="text-xl font-semibold mb-4">Расширенные примеры</h2>
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                            <button onclick="showCustomModal()" 
-                                    class="bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-4 rounded">
-                                Кастомное модальное окно
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+                <h2 class="text-lg font-semibold mb-4">Диалоги</h2>
+                
+                <div class="space-y-4">
+                    <button id="basic-dialog" class="w-full p-3 bg-gray-600 text-white rounded-md hover:bg-gray-700 transition">
+                        Простой диалог
                             </button>
-                            <button onclick="showImageModal()" 
-                                    class="bg-pink-600 hover:bg-pink-700 text-white py-2 px-4 rounded">
-                                Модальное окно с изображением
+                    
+                    <button id="confirm-dialog" class="w-full p-3 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition">
+                        Диалог подтверждения
                             </button>
-                            <button onclick="showAnimatedModal()" 
-                                    class="bg-cyan-600 hover:bg-cyan-700 text-white py-2 px-4 rounded">
-                                Анимированное модальное окно
+                    
+                    <button id="delete-dialog" class="w-full p-3 bg-red-600 text-white rounded-md hover:bg-red-700 transition">
+                        Диалог удаления
                             </button>
                         </div>
                     </div>
                 </div>
+        
+        <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md mb-8">
+            <h2 class="text-lg font-semibold mb-4">Кастомизация уведомлений</h2>
+            
+            <p class="mb-4 text-gray-600 dark:text-gray-300">
+                Примеры более сложных уведомлений, демонстрирующие возможности Notyf.
+            </p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <button id="custom-position" class="p-3 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition">
+                    Другая позиция
+                </button>
+                
+                <button id="custom-duration" class="p-3 bg-green-600 text-white rounded-md hover:bg-green-700 transition">
+                    Длительное уведомление (10 сек)
+                </button>
+                
+                <button id="custom-icon" class="p-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition">
+                    Без иконки
+                </button>
+                
+                <button id="dismissible" class="p-3 bg-yellow-600 text-white rounded-md hover:bg-yellow-700 transition">
+                    С кнопкой закрытия
+                </button>
             </div>
         </div>
     </div>
 </div>
+@endsection
 
-<!-- Подключение SweetAlert2 через CDN -->
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
-
+@section('scripts')
 <script>
-    // Настройка темной темы для SweetAlert2
-    const darkTheme = {
-        background: '#1f2937',
-        text: '#f3f4f6',
-        confirmButtonColor: '#3b82f6',
-        cancelButtonColor: '#6b7280',
-        confirmButtonText: 'Подтвердить',
-        cancelButtonText: 'Отмена'
-    };
-    
-    // Настраиваем Toast уведомления
-    const Toast = Swal.mixin({
-        toast: true,
-        position: 'top-end',
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-            toast.addEventListener('mouseenter', Swal.stopTimer);
-            toast.addEventListener('mouseleave', Swal.resumeTimer);
-        }
-    });
-    
-    // Функции для уведомлений
-    function showSuccess(message) {
-        Toast.fire({
-            icon: 'success',
-            title: message,
-            background: darkTheme.background,
-            color: darkTheme.text
+    document.addEventListener('DOMContentLoaded', function() {
+        // Основные уведомления
+        document.getElementById('success-notification').addEventListener('click', function() {
+            showSuccess('Операция успешно выполнена!');
         });
-    }
-    
-    function showError(message) {
-        Toast.fire({
-            icon: 'error',
-            title: message,
-            background: darkTheme.background,
-            color: darkTheme.text
+        
+        document.getElementById('error-notification').addEventListener('click', function() {
+            showError('Произошла ошибка при выполнении операции.');
         });
-    }
-    
-    function showInfo(message) {
-        Toast.fire({
-            icon: 'info',
-            title: message,
-            background: darkTheme.background,
-            color: darkTheme.text
+        
+        document.getElementById('info-notification').addEventListener('click', function() {
+            showInfo('Это информационное сообщение.');
         });
-    }
-    
-    function showWarning(message) {
-        Toast.fire({
-            icon: 'warning',
-            title: message,
-            background: darkTheme.background,
-            color: darkTheme.text
+        
+        document.getElementById('warning-notification').addEventListener('click', function() {
+            showWarning('Внимание! Это предупреждение.');
         });
-    }
-    
-    // Функция для демонстрации диалога удаления
-    function confirmDelete() {
-        Swal.fire({
-            title: 'Удалить элемент?',
-            text: 'Вы действительно хотите удалить этот элемент? Это действие нельзя будет отменить.',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: darkTheme.confirmButtonColor,
-            cancelButtonColor: darkTheme.cancelButtonColor,
-            confirmButtonText: 'Да, удалить',
-            cancelButtonText: darkTheme.cancelButtonText,
-            background: darkTheme.background,
-            color: darkTheme.text
-        }).then((result) => {
-            if (result.isConfirmed) {
-                showSuccess('Элемент успешно удален!');
-            }
+        
+        // Диалоги
+        document.getElementById('basic-dialog').addEventListener('click', function() {
+            confirmAction({
+                title: 'Информация',
+                text: 'Это простой диалог с одной кнопкой',
+                confirmButtonText: 'Понятно'
+            });
         });
-    }
-    
-    // Функция для демонстрации диалога подтверждения
-    function confirmAction() {
-        Swal.fire({
-            title: 'Подтверждение действия',
-            text: 'Вы действительно хотите выполнить это действие?',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: darkTheme.confirmButtonColor,
-            cancelButtonColor: darkTheme.cancelButtonColor,
-            confirmButtonText: darkTheme.confirmButtonText,
-            cancelButtonText: darkTheme.cancelButtonText,
-            background: darkTheme.background,
-            color: darkTheme.text
-        }).then((result) => {
-            if (result.isConfirmed) {
-                showSuccess('Действие успешно выполнено!');
-            } else {
-                showInfo('Действие отменено');
-            }
-        });
-    }
-    
-    // Функция для демонстрации запроса ввода
-    function inputPrompt() {
-        Swal.fire({
-            title: 'Введите название новой задачи',
-            input: 'text',
-            inputPlaceholder: 'Например: Создать презентацию',
-            showCancelButton: true,
-            confirmButtonColor: darkTheme.confirmButtonColor,
-            cancelButtonColor: darkTheme.cancelButtonColor,
-            confirmButtonText: darkTheme.confirmButtonText,
-            cancelButtonText: darkTheme.cancelButtonText,
-            background: darkTheme.background,
-            color: darkTheme.text,
-            inputValidator: (value) => {
-                if (!value) {
-                    return 'Поле не может быть пустым';
+        
+        document.getElementById('confirm-dialog').addEventListener('click', function() {
+            confirmAction({
+                title: 'Вы уверены?',
+                text: 'Вы хотите продолжить выполнение операции?',
+                confirmButtonText: 'Да, продолжить',
+                cancelButtonText: 'Отмена'
+            }).then(result => {
+                if (result) {
+                    showSuccess('Операция подтверждена!');
+                } else {
+                    showInfo('Операция отменена');
                 }
-            }
-        }).then((result) => {
-            if (result.value) {
-                showSuccess(`Задача "${result.value}" создана!`);
-            }
+            });
         });
-    }
-    
-    // Функция для демонстрации кастомного модального окна
-    function showCustomModal() {
-        Swal.fire({
-            title: 'Кастомное модальное окно',
-            html: `
-                <div class="py-3">
-                    <p class="mb-3">Это модальное окно с кастомным HTML-содержимым.</p>
-                    <div class="flex justify-center">
-                        <div class="bg-blue-900 p-3 rounded-lg">
-                            <h3 class="text-lg font-bold text-blue-300">Преимущества TaskManager</h3>
-                            <ul class="text-white list-disc list-inside text-left">
-                                <li>Управление задачами</li>
-                                <li>Трекинг времени</li>
-                                <li>Командная работа</li>
-                                <li>Интеграции с сервисами</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            `,
-            background: darkTheme.background,
-            color: darkTheme.text,
-            confirmButtonText: 'Круто!',
-            confirmButtonColor: darkTheme.confirmButtonColor
+        
+        document.getElementById('delete-dialog').addEventListener('click', function() {
+            confirmAction({
+                title: 'Удалить запись?',
+                text: 'Это действие нельзя будет отменить!',
+                confirmButtonText: 'Да, удалить',
+                cancelButtonText: 'Отмена'
+            }).then(result => {
+                if (result) {
+                    setTimeout(() => {
+                        showSuccess('Запись успешно удалена!');
+                    }, 500);
+                }
+            });
         });
-    }
-    
-    // Функция для демонстрации модального окна с изображением
-    function showImageModal() {
-        Swal.fire({
-            title: 'Красивое модальное окно',
-            imageUrl: 'https://media.sweetalert2.com//assets/examples/9.png',
-            imageWidth: 400,
-            imageHeight: 200,
-            imageAlt: 'Картинка',
-            background: darkTheme.background,
-            color: darkTheme.text,
-            confirmButtonText: 'Закрыть',
-            confirmButtonColor: darkTheme.confirmButtonColor
+        
+        // Кастомные уведомления
+        document.getElementById('custom-position').addEventListener('click', function() {
+            const notyf = new Notyf({
+                position: {
+                    x: 'left',
+                    y: 'top'
+                }
+            });
+            notyf.success('Уведомление в левом верхнем углу');
         });
-    }
-    
-    // Функция для демонстрации анимированного модального окна
-    function showAnimatedModal() {
-        Swal.fire({
-            title: 'Анимированное модальное окно',
-            text: 'С разными анимациями',
-            background: darkTheme.background,
-            color: darkTheme.text,
-            confirmButtonText: 'Закрыть',
-            confirmButtonColor: darkTheme.confirmButtonColor,
-            showClass: {
-                popup: 'animate__animated animate__bounceIn'
-            },
-            hideClass: {
-                popup: 'animate__animated animate__bounceOut'
-            }
+        
+        document.getElementById('custom-duration').addEventListener('click', function() {
+            const notyf = new Notyf({
+                duration: 10000,
+                ripple: true
+            });
+            notyf.success('Это уведомление будет отображаться 10 секунд');
         });
-    }
+        
+        document.getElementById('custom-icon').addEventListener('click', function() {
+            const notyf = new Notyf({
+                types: [{
+                    type: 'custom',
+                    background: '#3B82F6',
+                    icon: false
+                }]
+            });
+            notyf.open({
+                type: 'custom',
+                message: 'Уведомление без иконки'
+            });
+        });
+        
+        document.getElementById('dismissible').addEventListener('click', function() {
+            const notyf = new Notyf({
+                types: [{
+                    type: 'warning',
+                    background: '#F59E0B',
+                    dismissible: true
+                }]
+            });
+            notyf.open({
+                type: 'warning',
+                message: 'Нажмите на X, чтобы закрыть'
+            });
+        });
+    });
 </script>
 @endsection 

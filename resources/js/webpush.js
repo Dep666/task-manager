@@ -21,11 +21,10 @@ async function askNotificationPermission() {
 // Регистрация Service Worker
 async function registerServiceWorker() {
     try {
-        const registration = await navigator.serviceWorker.register('/task-manager/public/sw.js', {
-            scope: '/task-manager/public/'
-        });
+        const registration = await navigator.serviceWorker.register('/sw.js');
         return registration;
     } catch (error) {
+        console.error('Ошибка регистрации Service Worker:', error);
         return null;
     }
 }
@@ -41,6 +40,7 @@ async function subscribeToPush(registration) {
         const subscription = await registration.pushManager.subscribe(subscribeOptions);
         return subscription;
     } catch (error) {
+        console.error('Ошибка подписки на Push уведомления:', error);
         return null;
     }
 }
@@ -48,7 +48,7 @@ async function subscribeToPush(registration) {
 // Отправка подписки на сервер
 async function saveSubscription(subscription) {
     try {
-        const response = await fetch('/task-manager/public/push-subscriptions', {
+        const response = await fetch('/push-subscriptions', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -63,6 +63,7 @@ async function saveSubscription(subscription) {
 
         return true;
     } catch (error) {
+        console.error('Ошибка сохранения подписки:', error);
         return false;
     }
 }
@@ -109,7 +110,7 @@ async function disablePushNotifications() {
         
         if (subscription) {
             // Отправка запроса на удаление подписки на сервере
-            await fetch('/task-manager/public/push-subscriptions/remove', {
+            await fetch('/push-subscriptions/remove', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -126,6 +127,7 @@ async function disablePushNotifications() {
         }
         return false;
     } catch (error) {
+        console.error('Ошибка отписки от уведомлений:', error);
         return false;
     }
 }

@@ -15,6 +15,9 @@
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         
+        <!-- Chart.js - библиотека для графиков -->
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        
         <!-- Дополнительные стили для шрифтов -->
         <style>
             body {

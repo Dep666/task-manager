@@ -32,8 +32,8 @@ self.addEventListener('push', function(event) {
     const title = notificationData.title || 'Новое уведомление';
     const options = {
         body: notificationData.body || 'Вы получили новое уведомление',
-        icon: notificationData.icon || '/task-manager/public/images/notification-icon.png',
-        badge: notificationData.badge || '/task-manager/public/images/badge-icon.png',
+        icon: notificationData.icon || '/images/notification-icon.png',
+        badge: notificationData.badge || '/images/badge-icon.png',
         data: notificationData.data || {},
         actions: notificationData.actions || []
     };

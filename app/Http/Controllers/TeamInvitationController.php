@@ -55,17 +55,30 @@ class TeamInvitationController extends Controller
             return back()->withErrors(['user_identifier' => 'Этот пользователь уже является членом команды.']);
         }
 
-        // Проверка, нет ли уже ожидающего приглашения для этого пользователя
+        // Проверяем существующее приглашение
         $existingInvitation = TeamInvitation::where('team_id', $team->id)
             ->where('user_id', $user->id)
-            ->where('status', 'pending')
             ->first();
 
         if ($existingInvitation) {
-            return back()->withErrors(['user_identifier' => 'Этому пользователю уже отправлено приглашение.']);
+            // Если приглашение отклонено, обновляем его статус на pending
+            if ($existingInvitation->status === 'declined') {
+                $existingInvitation->update([
+                    'status' => 'pending',
+                    'invited_by' => Auth::id(),
+                    'declined_at' => null
+                ]);
+                return redirect()->route('teams.editUsers', $team->id)
+                    ->with('success', 'Приглашение повторно отправлено пользователю.');
+            }
+            
+            // Если приглашение в статусе pending, возвращаем ошибку
+            if ($existingInvitation->status === 'pending') {
+                return back()->withErrors(['user_identifier' => 'Этому пользователю уже отправлено приглашение.']);
+            }
         }
 
-        // Создание приглашения
+        // Создание нового приглашения
         TeamInvitation::create([
             'team_id' => $team->id,
             'user_id' => $user->id,

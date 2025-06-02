@@ -23,7 +23,10 @@ class TaskController extends Controller
             ->pluck('id');
         
         // Получаем все статусы задач для фильтрации
-        $statuses = TaskStatus::all();
+        $statuses = TaskStatus::select('name')
+            ->distinct()
+            ->orderBy('name')
+            ->get();
         
         // Начинаем строить запрос для задач
         $query = Task::with('team') // Подгружаем информацию о командах
@@ -49,7 +52,9 @@ class TaskController extends Controller
 
         // Фильтрация по статусу задачи
         if ($request->has('status') && $request->status != '') {
-            $query->where('status_id', $request->status);
+            $query->whereHas('status', function($q) use ($request) {
+                $q->where('name', $request->status);
+            });
         }
 
         // Фильтрация по дедлайну (сортировка по сроку выполнения)

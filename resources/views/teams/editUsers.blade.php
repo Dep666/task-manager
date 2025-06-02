@@ -24,7 +24,9 @@
                     <tr class="bg-gray-50 dark:bg-gray-700">
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Имя участника</th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Роль</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Действия</th>
+                        @if(auth()->id() === $team->owner_id)
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Действия</th>
+                        @endif
                     </tr>
                 </thead>
                 <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
@@ -44,9 +46,11 @@
                                 Создатель команды
                             </span>
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                            <!-- Пустая ячейка - создателя нельзя удалить -->
-                        </td>
+                        @if(auth()->id() === $team->owner_id)
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                <!-- Пустая ячейка - создателя нельзя удалить -->
+                            </td>
+                        @endif
                     </tr>
                     @endif
                     
@@ -59,8 +63,8 @@
                                     Участник
                                 </span>
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                @if ($team->owner_id == auth()->user()->id) <!-- Проверка, если текущий пользователь является владельцем -->
+                            @if(auth()->id() === $team->owner_id)
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                     <form action="{{ route('teams.removeUser', ['team' => $team->id, 'user' => $user->id]) }}" method="POST" class="inline">
                                         @csrf
                                         @method('DELETE')
@@ -75,8 +79,8 @@
                                             Удалить
                                         </button>
                                     </form>
-                                @endif
-                            </td>
+                                </td>
+                            @endif
                         </tr>
                     @endforeach
                 </tbody>
@@ -94,25 +98,27 @@
                 Назад
             </a>
             
-            <a 
-                href="{{ route('teams.edit', $team->id) }}" 
-                class="flex items-center px-4 py-2 bg-gray-800 dark:bg-gray-700 text-white rounded hover:bg-gray-700 dark:hover:bg-gray-600 transition duration-300 text-sm font-medium border border-gray-600"
-            >
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                </svg>
-                Редактировать команду
-            </a>
-            
-            <a 
-                href="{{ route('teams.addUser', $team->id) }}" 
-                class="flex items-center px-4 py-2 bg-gray-800 dark:bg-gray-700 text-white rounded hover:bg-gray-700 dark:hover:bg-gray-600 transition duration-300 text-sm font-medium border border-gray-600"
-            >
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
-                </svg>
-                Добавить пользователя
-            </a>
+            @if(auth()->id() === $team->owner_id)
+                <a 
+                    href="{{ route('teams.edit', $team->id) }}" 
+                    class="flex items-center px-4 py-2 bg-gray-800 dark:bg-gray-700 text-white rounded hover:bg-gray-700 dark:hover:bg-gray-600 transition duration-300 text-sm font-medium border border-gray-600"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                    </svg>
+                    Редактировать команду
+                </a>
+                
+                <a 
+                    href="{{ route('teams.addUser', $team->id) }}" 
+                    class="flex items-center px-4 py-2 bg-gray-800 dark:bg-gray-700 text-white rounded hover:bg-gray-700 dark:hover:bg-gray-600 transition duration-300 text-sm font-medium border border-gray-600"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+                    </svg>
+                    Добавить пользователя
+                </a>
+            @endif
         </div>
     </div>
 @endsection

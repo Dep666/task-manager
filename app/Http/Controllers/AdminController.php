@@ -9,10 +9,10 @@ use Illuminate\Support\Facades\Log;
 
 class AdminController extends Controller
 {
-    // Показать всех пользователей
+    // Показать панель администратора
     public function index()
     {
-        return view('admin.dashboard'); // Страница с панелью администратора
+        return view('admin.dashboard');
     }
 
     // Показать всех пользователей
